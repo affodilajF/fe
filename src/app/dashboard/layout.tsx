@@ -1,6 +1,8 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { GlobalErrorDialog } from "@/components/global-error-provider";
+import { GlobalConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -20,6 +22,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {children}
         </SidebarInset>
       </SidebarProvider>
+      <GlobalErrorDialog />
+      <GlobalConfirmDialog />
     </div>
   );
 }

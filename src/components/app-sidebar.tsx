@@ -2,16 +2,14 @@
 
 import * as React from "react";
 import {
-  IconDashboard,
-  IconHelp,
   IconInnerShadowTop,
   IconReport,
-  IconSettings,
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -24,21 +22,16 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "",
+    email: "",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
     {
-      title: "Camera Manager",
-      url: "/dashboard/cameramanager",
-      icon: IconDashboard,
+      title: "Upload Form",
+      url: "/dashboard/upload-form",
+      icon: IconReport,
     },
-    // {
-    //   title: "Streaming",
-    //   url: "/dashboard/streaming",
-    //   icon: IconDashboard,
-    // },
     {
       title: "Logs",
       url: "/dashboard/logs",
@@ -46,16 +39,6 @@ const data = {
     },
   ],
   navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
   ],
 };
 
@@ -69,13 +52,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/dashboard/upload-form">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
-                  {/* Chickin Indonesia */}
                   yayaya
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

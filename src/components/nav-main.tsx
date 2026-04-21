@@ -20,31 +20,30 @@ export function NavMain({
     icon?: Icon;
   }[];
 }) {
-  const currentPath = usePathname(); 
+  const currentPath = usePathname();
 
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           {items.map((item) => {
-            const isActive = currentPath === item.url;
+            const isActive = currentPath === item.url || (item.url !== "/" && currentPath.startsWith(item.url + "/"));
             return (
               <SidebarMenuItem key={item.title}>
-                <Link href={item.url} passHref>
-                  <SidebarMenuButton
-                    className={`min-w-8 tooltip transition-all duration-300 ease-in-out rounded-lg px-4 py-2 flex items-center gap-2 ${
-                      isActive
-                        ? // ✅ Tampilan saat aktif
-                          "bg-primary/90 text-white hover:bg-primary/90 hover:text-white"
-                        : // ✅ Tampilan default
-                          "bg-white text-primary hover:bg-primary/70 hover:text-white"
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  className={`min-w-8 tooltip rounded-lg px-4 py-2 flex items-center gap-2 ${isActive
+                    ? "!bg-black !text-white font-bold"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-300"
                     }`}
-                    tooltip={item.title}
-                  >
+                  tooltip={item.title}
+                >
+                  <Link href={item.url} prefetch={true}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </Link>
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             );
           })}
