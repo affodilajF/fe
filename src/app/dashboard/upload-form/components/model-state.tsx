@@ -32,7 +32,6 @@ interface ModelStateProps {
 //         name: "Dummy Model",
 //         date: "2024-01-01",
 //         time: "12:00:00",
-//         thumbnail_path: "",
 //         user_id: 1,
 //         created_at: "2024-01-01"
 //     }

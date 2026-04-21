@@ -37,7 +37,6 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
   const [name, setName] = useState<string>("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null); // State baru untuk pengiriman ke backend
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [lineTop, setLineTop] = useState<number | undefined>();
@@ -52,7 +51,6 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
       setName("");
       setVideoFile(null);
       setThumbnail(null);
-      setThumbnailFile(null);
       fetchDetectionParameter();
     }
   }, [open]);
@@ -79,7 +77,6 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
     if (!file) {
       setVideoFile(null);
       setThumbnail(null);
-      setThumbnailFile(null);
       return;
     }
 
@@ -108,91 +105,12 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
         // 1. Draw original frame (bersih untuk preview UI)
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         setThumbnail(canvas.toDataURL("image/jpeg", 0.9));
-
-        // 2. Fetch parameter terbaru untuk menggambar annotasi ke thumbnail backend
-        const config = await fetchDetectionParameter();
-
-        if (config) {
-          const topY = (config.top_roi / 100) * canvas.height;
-          const bottomY = (config.bottom_roi / 100) * canvas.height;
-          const centerX = canvas.width / 2;
-          const centerY = (topY + bottomY) / 2;
-
-          // Draw shaded area
-          ctx.fillStyle = "rgba(239, 68, 68, 0.2)";
-          ctx.fillRect(0, topY, canvas.width, bottomY - topY);
-
-          // Draw ROI Lines
-          ctx.strokeStyle = "rgb(239, 68, 68)";
-          ctx.lineWidth = Math.max(3, canvas.height * 0.005);
-          ctx.beginPath();
-          ctx.moveTo(0, topY);
-          ctx.lineTo(canvas.width, topY);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(0, bottomY);
-          ctx.lineTo(canvas.width, bottomY);
-          ctx.stroke();
-
-          // Draw Badge "ZONA DETEKSI"
-          const badgeText = "ZONA DETEKSI";
-          const fontSize = Math.max(14, Math.round(canvas.height * 0.025));
-          ctx.font = `bold ${fontSize}px Inter, sans-serif`;
-          const badgeWidth = ctx.measureText(badgeText).width + 30;
-          const badgeHeight = fontSize + 20;
-          ctx.fillStyle = "rgb(153, 27, 27)";
-          ctx.beginPath();
-          ctx.roundRect(
-            centerX - badgeWidth / 2,
-            centerY - badgeHeight / 2,
-            badgeWidth,
-            badgeHeight,
-            8,
-          );
-          ctx.fill();
-          ctx.fillStyle = "white";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(badgeText, centerX, centerY);
-
-          // Draw Arrow Arah Masuk
-          const arrowLineX = centerX;
-          const arrowSize = Math.max(30, canvas.height * 0.05);
-          ctx.strokeStyle = "white";
-          ctx.lineWidth = 4;
-          ctx.fillStyle = "white";
-          const arrowY = topY - arrowSize - 10;
-          ctx.beginPath();
-          ctx.moveTo(centerX, arrowY);
-          ctx.lineTo(centerX, arrowY + arrowSize);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(centerX - 12, arrowY + arrowSize - 12);
-          ctx.lineTo(centerX, arrowY + arrowSize);
-          ctx.lineTo(centerX + 12, arrowY + arrowSize - 12);
-          ctx.fill();
-        }
-
-        // 3. Konversi hasil yang sudah digambar ke Blob -> File
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              const file = new File([blob], `thumbnail_${Date.now()}.jpg`, {
-                type: "image/jpeg",
-              });
-              setThumbnailFile(file);
-            }
-          },
-          "image/jpeg",
-          0.9,
-        );
       }
       URL.revokeObjectURL(fileUrl);
     };
 
     video.onerror = () => {
       URL.revokeObjectURL(fileUrl);
-      setThumbnailFile(null);
     };
   };
 
@@ -209,7 +127,6 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
         time: `${hour}:${minute}:00`,
         video: videoFile,
         save_video: true,
-        thumbnail: thumbnailFile || undefined, // Mengirim file yang sudah digambar
       });
 
       if (res.success) {
@@ -220,6 +137,7 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
         console.error("Error from API:", res.message);
         showError(res.message);
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Exception when calling uploadAndRunDetection:", error);
       showError(error.message);

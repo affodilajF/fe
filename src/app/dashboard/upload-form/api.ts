@@ -38,7 +38,6 @@ export interface RunDetectionRequest {
   time: string;
   video: File;
   save_video: boolean;
-  thumbnail?: File;
 }
 
 export interface RunDetectionResponse {
@@ -55,10 +54,6 @@ export const uploadAndRunDetection = async (data: RunDetectionRequest): Promise<
 
   console.log(formData);
   console.log(data.time);
-
-  if (data.thumbnail) {
-    formData.append("thumbnail", data.thumbnail);
-  }
 
   return safeFetch(`${BASE_URL}/run-ai-model`, {
     method: "POST",
