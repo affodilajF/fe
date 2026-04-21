@@ -5,13 +5,11 @@ import { safeFetch, ApiResponse, BASE_URL } from "@/lib/api-response";
 export interface DetectionParameterRequest {
   top_roi: number,
   bottom_roi: number,
-  entry_direction: string,
   frame_interval: number
 }
 export interface DetectionParameterResponse {
   top_roi: number,
   bottom_roi: number,
-  entry_direction: string,
   frame_interval: number
 }
 
