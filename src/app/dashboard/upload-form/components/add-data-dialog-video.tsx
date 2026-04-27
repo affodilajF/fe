@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { uploadAndRunDetection } from "../api";
-import { Calendar, Clock, ArrowDown, ArrowUp, Camera } from "lucide-react";
+import { Calendar, Clock, ArrowDown, Film } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -26,11 +26,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface AddVideoDialogProps {
+interface AddDataDialogVideoProps {
   onSuccess?: () => void;
+  trigger?: React.ReactNode;
 }
 
-export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
+export default function AddDataDialogVideo({
+  onSuccess,
+  trigger,
+}: AddDataDialogVideoProps) {
   const [date, setDate] = useState<string>("");
   const [hour, setHour] = useState<string>("00");
   const [minute, setMinute] = useState<string>("00");
@@ -102,7 +106,6 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
       const ctx = canvas.getContext("2d");
 
       if (ctx) {
-        // 1. Draw original frame (bersih untuk preview UI)
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         setThumbnail(canvas.toDataURL("image/jpeg", 0.9));
       }
@@ -115,7 +118,7 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
   };
 
   const handleSave = async () => {
-    if (!videoFile || !name.trim() || !date || !hour || !minute) {
+    if (!name.trim() || !date || !hour || !minute || !videoFile) {
       return;
     }
 
@@ -137,9 +140,8 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
         console.error("Error from API:", res.message);
         showError(res.message);
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error("Exception when calling uploadAndRunDetection:", error);
+      console.error("Exception when calling API:", error);
       showError(error.message);
     } finally {
       setIsLoading(false);
@@ -149,23 +151,26 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="secondary"
-          onClick={() => setOpen(true)}
-          className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition"
-        >
-          + Run AI Model
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button
+            variant="secondary"
+            onClick={() => setOpen(true)}
+            className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition"
+          >
+            + Run Video Analysis
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="w-full max-w-xl transition-all duration-400 ease-out animate-in fade-in zoom-in-50 rounded-2xl p-6 sm:p-7">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-slate-800">
-            APD Detection
+            Video Analysis
           </DialogTitle>
           <DialogDescription className="text-slate-500">
-            Fill in the following details and upload the recording to run AI
-            detection analysis.
+            Fill in the details and upload the recording to run AI detection analysis.
           </DialogDescription>
         </DialogHeader>
 
@@ -255,78 +260,75 @@ export default function AddVideoDialog({ onSuccess }: AddVideoDialogProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 mt-2">
-            <Label
-              htmlFor="video"
-              className="text-slate-700 font-semibold text-sm"
-            >
-              Upload Video Recording
-            </Label>
-            <Input
-              type="file"
-              id="video"
-              accept="video/*"
-              onChange={handleVideoChange}
-              className="bg-slate-50 border-slate-200 text-slate-500 transition-colors focus-visible:ring-indigo-500 file:bg-slate-200 file:text-slate-700 file:font-semibold file:border-0 file:mr-4 file:px-3 file:py-1 file:rounded-md hover:file:bg-slate-300 text-sm h-10 py-1.5"
-            />
-          </div>
+          <div className="flex flex-col gap-4 pt-1">
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor="video"
+                className="text-slate-700 font-semibold text-sm"
+              >
+                Upload Video Recording
+              </Label>
+              <Input
+                type="file"
+                id="video"
+                accept="video/*"
+                onChange={handleVideoChange}
+                className="bg-slate-50 border-slate-200 text-slate-500 transition-colors focus-visible:ring-indigo-500 file:bg-slate-200 file:text-slate-700 file:font-semibold file:border-0 file:mr-4 file:px-3 file:py-1 file:rounded-md hover:file:bg-slate-300 text-sm h-10 py-1.5"
+              />
+            </div>
 
-          {thumbnail && (
-            <div>
-              <div className="w-full mt-2 rounded-xl overflow-hidden border-[3px] border-slate-800 shadow-inner bg-slate-900 group relative aspect-video shrink-0 select-none pointer-events-none">
-                <img
-                  src={thumbnail}
-                  alt="Video thumbnail preview"
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80"
-                />
+            {thumbnail && (
+              <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="w-full mt-2 rounded-xl overflow-hidden border-[3px] border-slate-800 shadow-inner bg-slate-900 group relative aspect-video shrink-0 select-none pointer-events-none">
+                  <img
+                    src={thumbnail}
+                    alt="Video thumbnail preview"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80"
+                  />
 
-                {/* Animation / Entry Direction Visual Cue */}
-                {
                   <div className="absolute top-3 left-1/2 -translate-x-1/2 flex flex-col items-center animate-pulse text-white/90 pointer-events-none z-10">
                     <span className="text-[9px] font-bold tracking-widest uppercase mb-0.5 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm shadow-sm ring-1 ring-white/20">
                       Entry Direction
                     </span>
                     <ArrowDown className="w-5 h-5 drop-shadow-md" />
                   </div>
-                }
-                {/* Tinted Zone Area */}
-                {lineTop !== undefined && lineBottom !== undefined && (
-                  <div
-                    className="absolute left-0 right-0 bg-red-500/20 pointer-events-none transition-all duration-75 ease-linear flex items-center justify-center z-10"
-                    style={{
-                      top: `${lineTop}%`,
-                      height: `${lineBottom - lineTop}%`,
-                    }}
-                  >
-                    <div className="text-red-100 text-[9px] font-bold uppercase tracking-widest bg-red-900/70 backdrop-blur-[2px] px-2 py-0.5 rounded shadow-sm border border-red-500/40">
-                      Detection Zone
+
+                  {lineTop !== undefined && lineBottom !== undefined && (
+                    <div
+                      className="absolute left-0 right-0 bg-red-500/20 pointer-events-none transition-all duration-75 ease-linear flex items-center justify-center z-10"
+                      style={{
+                        top: `${lineTop}%`,
+                        height: `${lineBottom - lineTop}%`,
+                      }}
+                    >
+                      <div className="text-red-100 text-[9px] font-bold uppercase tracking-widest bg-red-900/70 backdrop-blur-[2px] px-2 py-0.5 rounded shadow-sm border border-red-500/40">
+                        Detection Zone
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Static Top Line */}
-                {lineTop !== undefined && (
-                  <div
-                    className="absolute left-0 right-0 h-0.5 bg-red-500 z-10 shadow-[0_0_8px_rgba(239,68,68,0.8)] pointer-events-none transition-all duration-75 ease-linear"
-                    style={{ top: `${lineTop}%` }}
-                  />
-                )}
+                  {lineTop !== undefined && (
+                    <div
+                      className="absolute left-0 right-0 h-0.5 bg-red-500 z-10 shadow-[0_0_8px_rgba(239,68,68,0.8)] pointer-events-none transition-all duration-75 ease-linear"
+                      style={{ top: `${lineTop}%` }}
+                    />
+                  )}
 
-                {/* Static Bottom Line */}
-                {lineBottom !== undefined && (
-                  <div
-                    className="absolute left-0 right-0 h-0.5 bg-red-500 z-10 shadow-[0_0_8px_rgba(239,68,68,0.8)] pointer-events-none transition-all duration-75 ease-linear"
-                    style={{ top: `${lineBottom}%` }}
-                  />
-                )}
+                  {lineBottom !== undefined && (
+                    <div
+                      className="absolute left-0 right-0 h-0.5 bg-red-500 z-10 shadow-[0_0_8px_rgba(239,68,68,0.8)] pointer-events-none transition-all duration-75 ease-linear"
+                      style={{ top: `${lineBottom}%` }}
+                    />
+                  )}
+                </div>
+                <div className="mt-1">
+                  <p className="text-[12px] text-slate-600 italic leading-snug px-1">
+                    Open settings to set the detection zone.
+                  </p>
+                </div>
               </div>
-              <div className="mt-1">
-                <p className="text-[12px] text-slate-600 italic leading-snug px-1">
-                  Open settings to set the detection zone.
-                </p>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <DialogFooter className="mt-2 gap-2 sm:gap-0 pt-4 border-t border-gray-100">

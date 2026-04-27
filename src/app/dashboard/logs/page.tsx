@@ -62,7 +62,7 @@ export default function LogsPage() {
         return {
           ...item,
           jobName: job.name,
-          videoDateTime: job.video_datetime,
+          data_datetime: job.data_datetime,
         };
       })
     );

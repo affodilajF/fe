@@ -61,6 +61,30 @@ export const uploadAndRunDetection = async (data: RunDetectionRequest): Promise<
   });
 }
 
+// run AI detection model with images
+export interface RunDetectionImagesRequest {
+  name: string;
+  date: string;
+  time: string;
+  images: File[];
+}
+
+export const uploadAndRunDetectionImages = async (data: RunDetectionImagesRequest): Promise<ApiResponse<any>> => {
+  const formData = new FormData();
+  formData.append("name", data.name);
+  formData.append("date", data.date);
+  formData.append("time", data.time);
+
+  data.images.forEach((file) => {
+    formData.append("images", file);
+  });
+
+  return safeFetch(`${BASE_URL}/run-ai-model-images`, {
+    method: "POST",
+    body: formData,
+  });
+}
+
 
 
 // nanti perbaiki 
@@ -84,9 +108,11 @@ export interface DetectionListDataApiResponse {
 export interface DetectionJob {
   job_id: string;
   job_status: string;
+  source_type: string;
   stored_status: string;
   name: string;
-  video_datetime: string;
+  data_datetime: string;
+  data_datetime_end: string;
   total_frames: number;
   created_at: string;
   detection_result_items: DetectionResultItem[];
@@ -102,9 +128,11 @@ export function getNotDecidedDetection(): ApiResponse<DetectionResult> {
 export interface DetectionResult {
   job_id: string;
   job_status: "Running" | "Done";
+  source_type: string;
   stored_status: "Stored" | "Not Stored" | "Not Decided";
   name: string;
-  video_datetime: string;
+  data_datetime: string;
+  data_datetime_end: string;
   total_frames: number;
   created_at: string;
   detection_result_items: DetectionResultItem[];

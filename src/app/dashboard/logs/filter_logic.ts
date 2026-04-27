@@ -20,10 +20,10 @@ export function filterDetections(items: any[], filters: PPEFilters) {
     }
 
     // Date Range Filter
-    if (item.videoDateTime) {
-      const itemDate = item.videoDateTime.includes("T")
-        ? item.videoDateTime.split("T")[0]
-        : item.videoDateTime.split(" ")[0];
+    if (item.data_datetime) {
+      const itemDate = item.data_datetime.includes("T")
+        ? item.data_datetime.split("T")[0]
+        : item.data_datetime.split(" ")[0];
 
       if (filters.startDate && itemDate < filters.startDate) {
         return false;
@@ -135,7 +135,7 @@ export function getComplianceStats(items: any[]): ComplianceStats {
     const hasViolation = ppeStatus.some((p) => !isPassValue(p.val));
     if (hasViolation) stats.totalViolations++;
 
-    const isoDateTime = toISOFormat(item.videoDateTime);
+    const isoDateTime = toISOFormat(item.data_datetime);
     let dateKey = "";
     let hour = 0;
 

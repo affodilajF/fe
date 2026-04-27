@@ -30,6 +30,8 @@ interface ComplianceDetailDialogProps {
         name: string;
         date: string;
         time: string;
+        time_end?: string;
+        source_type?: string;
         created_at: string;
     } | null;
     open: boolean;
@@ -71,7 +73,12 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                             {/* Bottom row: Time (left) & Created At (right) */}
                             <div className="flex flex-col gap-1 mt-2">
                                 <div className="flex justify-between text-xs font-semibold text-slate-700">
-                                    <span>{metadata.time} WIB, {metadata.date}</span>
+                                    <span>
+                                        {metadata.source_type === "VIDEO" && metadata.time_end
+                                            ? `${metadata.time} - ${metadata.time_end} WIB, ${metadata.date}`
+                                            : `${metadata.time} WIB, ${metadata.date}`
+                                        }
+                                    </span>
                                     <span className="text-slate-500">{formatVideoDateTime(metadata.created_at)}</span>
                                 </div>
                                 <div className="text-[10px] text-slate-400 font-medium flex items-center gap-1">

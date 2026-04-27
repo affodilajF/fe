@@ -36,8 +36,10 @@ import {
 export const schema = z.object({
     job_id: z.string(),
     name: z.string(),
-    video_datetime: z.string(),
+    data_datetime: z.string(),
+    data_datetime_end: z.string(),
     job_status: z.string(),
+    source_type: z.string(),
     stored_status: z.string(),
     created_at: z.string(),
 });
@@ -67,33 +69,52 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         },
     },
     {
-        accessorKey: "video_date",
-        header: "video date",
+        accessorKey: "source_type",
+        header: "source",
         cell: ({ row }) => {
-            return <div className="text-sm font-medium text-slate-600">{getVideoDate(row.original.video_datetime)}</div>;
+            const isImage = row.original.source_type?.toUpperCase() === "IMAGE";
+            return (
+                <Badge variant="outline" className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${isImage ? 'bg-amber-50 text-amber-600 border-amber-200' : 'bg-blue-50 text-blue-600 border-blue-200'}`}>
+                    {row.original.source_type || "VIDEO"}
+                </Badge>
+            );
         }
     },
     {
-        accessorKey: "video_datetime",
-        header: "video time",
+        accessorKey: "date",
+        header: "date",
         cell: ({ row }) => {
-            return <div className="text-sm font-medium text-slate-600">{getVideoTime(row.original.video_datetime)}</div>;
+            return <div className="text-sm font-medium text-slate-600">{getVideoDate(row.original.data_datetime)}</div>;
         }
     },
     {
-        accessorKey: "job_status",
-        header: "Status",
-        cell: ({ row }) => (
-            <Badge variant="outline" className="text-slate-600 bg-white px-2.5 py-1 whitespace-nowrap flex items-center gap-1.5 w-fit border-slate-200">
-                {row.original.job_status === "Done" ? (
-                    <IconCircleCheckFilled className="w-3.5 h-3.5 text-emerald-500" />
-                ) : (
-                    <IconLoader className="w-3.5 h-3.5 animate-spin text-blue-500" />
-                )}
-                {row.original.job_status}
-            </Badge>
-        ),
+        accessorKey: "time",
+        header: "time",
+        cell: ({ row }) => {
+            const time = getVideoTime(row.original.data_datetime);
+            const timeEnd = getVideoTime(row.original.data_datetime_end);
+            const isVideo = row.original.source_type?.toUpperCase() !== "IMAGE";
+            return (
+                <div className="text-sm font-medium text-slate-600">
+                    {isVideo && timeEnd ? `${time} - ${timeEnd}` : time}
+                </div>
+            );
+        }
     },
+    // {
+    //     accessorKey: "job_status",
+    //     header: "Status",
+    //     cell: ({ row }) => (
+    //         <Badge variant="outline" className="text-slate-600 bg-white px-2.5 py-1 whitespace-nowrap flex items-center gap-1.5 w-fit border-slate-200">
+    //             {row.original.job_status === "Done" ? (
+    //                 <IconCircleCheckFilled className="w-3.5 h-3.5 text-emerald-500" />
+    //             ) : (
+    //                 <IconLoader className="w-3.5 h-3.5 animate-spin text-blue-500" />
+    //             )}
+    //             {row.original.job_status}
+    //         </Badge>
+    //     ),
+    // },
     {
         accessorKey: "created_at",
         header: "created at",
@@ -221,7 +242,7 @@ function HistoryDataTableComponent({
                     {isLoading ? (
                         <Skeleton className="h-4 w-48" />
                     ) : (
-                        `Menampilkan ${table.getRowModel().rows.length} data dari ${totalData} data`
+                        `Showing ${table.getRowModel().rows.length} data from ${totalData} data`
                     )}
                 </div>
                 <div className="flex items-center gap-4">

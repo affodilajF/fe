@@ -15,7 +15,7 @@ export interface DetectionListDataApiResponse {
 export interface DetectionJob {
     job_id: string;
     name: string;
-    video_datetime: string;
+    data_datetime: string;
     created_at: string;
     detection_result: DetectionResultItem[]; // Updated from detection_result_items
 }
@@ -29,5 +29,7 @@ export interface DetectionResultItem {
     hairnet: boolean,
     person_track_id: number,
     image_data: string | null,
+    detection_time?: string,
+    video_datetime?: string,
     created_at: string,
 }

@@ -24,9 +24,11 @@ import { fetchEventSource } from "@microsoft/fetch-event-source";
 export interface JobDetectionResult {
   job_id: string;
   job_status: "Running" | "Done";
+  source_type: string;
   stored_status: "Stored" | "Not Stored" | "Not Decided";
   name: string;
-  video_datetime: string;
+  data_datetime: string;
+  data_datetime_end: string;
   total_frames: number;
   created_at: string;
   detection_result_items: DetectionResultItem[];
@@ -163,8 +165,10 @@ export default function StreamingPage() {
           setSelectedMetadata({
             job_id: source.job_id,
             name: source.name,
-            date: getVideoDate(source.video_datetime),
-            time: getVideoTime(source.video_datetime),
+            date: getVideoDate(source.data_datetime),
+            time: getVideoTime(source.data_datetime),
+            time_end: getVideoTime(source.data_datetime_end),
+            source_type: source.source_type,
             created_at: source.created_at,
           });
         }

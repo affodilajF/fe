@@ -10,7 +10,7 @@ import {
     TableRow
 } from "@/components/ui/table";
 import { Check, X, ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
-import { formatVideoDateTime, getVideoTime } from "@/lib/date-utils";
+import { getVideoDate, getVideoTime } from "@/lib/date-utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -61,8 +61,8 @@ export function LogsDataTable({
                             <TableRow className="hover:bg-gray-200 border-none">
                                 <TableHead className="w-12 text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">No</TableHead>
                                 <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Name</TableHead>
-                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Video Date</TableHead>
-                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">Detection Time</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Date</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">Time</TableHead>
                                 <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Apron</TableHead>
                                 <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Gloves</TableHead>
                                 <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Boots</TableHead>
@@ -94,10 +94,10 @@ export function LogsDataTable({
                                             {item.jobName}
                                         </TableCell>
                                         <TableCell className="py-3 px-4 text-sm font-medium text-slate-600 whitespace-nowrap">
-                                            {formatVideoDateTime(item.videoDateTime)}
+                                            {getVideoDate(item.data_datetime)}
                                         </TableCell>
                                         <TableCell className="py-3 px-4 text-sm font-medium text-slate-800 whitespace-nowrap text-center">
-                                            {getVideoTime(item.detection_time) || "-"}
+                                            {getVideoTime(item.detection_time) + " WIB" || "-"}
                                         </TableCell>
                                         <TableCell><div className="flex justify-center py-3 px-4"><StatusIcon checked={item.apron} /></div></TableCell>
                                         <TableCell><div className="flex justify-center py-3 px-4"><StatusIcon checked={item.gloves} /></div></TableCell>
