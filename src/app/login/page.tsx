@@ -50,7 +50,7 @@ export default function LoginPage() {
       localStorage.setItem("refresh_token", res.data.refresh_token)
       localStorage.setItem("user_email", formData.email);
       localStorage.setItem("user_name", res.data.name);
-      window.location.href = "/dashboard/upload-form";
+      window.location.href = "/dashboard/upload-detect";
       console.log("token", res.data);
     } else {
       setErrorMsg(res.message);

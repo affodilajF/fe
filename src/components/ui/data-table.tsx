@@ -10,7 +10,7 @@ import {
     TableRow
 } from "@/components/ui/table";
 import { Check, X, ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
-import { getVideoDate, getVideoTime } from "@/lib/date-utils";
+import { getVideoDate, getVideoTime, formatVideoDateTime } from "@/lib/date-utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -54,7 +54,7 @@ export function LogsDataTable({
 
     return (
         <div className="w-full flex flex-col gap-5">
-            <div className="overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm transition-all duration-300">
+            <div className="overflow-hidden rounded-xl border border-gray-300 bg-white transition-all duration-300">
                 <div className="overflow-x-auto">
                     <Table className="min-w-full">
                         <TableHeader className="bg-gray-100 border-b border-gray-300">
@@ -69,13 +69,14 @@ export function LogsDataTable({
                                 <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Mask</TableHead>
                                 <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Hairnet</TableHead>
                                 <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Image</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">Created At</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <TableRow key={i} className="border-b border-slate-100 last:border-0 hover:bg-transparent">
-                                        {Array.from({ length: 10 }).map((_, j) => (
+                                        {Array.from({ length: 11 }).map((_, j) => (
                                             <TableCell key={j} className="py-4 px-4 h-[73px]">
                                                 <Skeleton className="h-4 w-full opacity-100" />
                                             </TableCell>
@@ -97,7 +98,7 @@ export function LogsDataTable({
                                             {getVideoDate(item.data_datetime)}
                                         </TableCell>
                                         <TableCell className="py-3 px-4 text-sm font-medium text-slate-800 whitespace-nowrap text-center">
-                                            {getVideoTime(item.detection_time) + " WIB" || "-"}
+                                            {getVideoTime(item.detection_time) || "-"}
                                         </TableCell>
                                         <TableCell><div className="flex justify-center py-3 px-4"><StatusIcon checked={item.apron} /></div></TableCell>
                                         <TableCell><div className="flex justify-center py-3 px-4"><StatusIcon checked={item.gloves} /></div></TableCell>
@@ -124,11 +125,14 @@ export function LogsDataTable({
                                                 )}
                                             </div>
                                         </TableCell>
+                                        <TableCell className="py-3 px-4 text-[10px] font-medium text-slate-500 whitespace-nowrap text-center">
+                                            {item.created_at ? formatVideoDateTime(item.created_at) : "-"}
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={10} className="h-40 text-center text-slate-500 font-medium">
+                                    <TableCell colSpan={11} className="h-40 text-center text-slate-500 font-medium">
                                         Tidak ada data deteksi yang tersedia.
                                     </TableCell>
                                 </TableRow>
@@ -152,7 +156,7 @@ export function LogsDataTable({
                         <div className="flex items-center gap-2">
                             <Button
                                 variant="outline"
-                                className="size-8 rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm"
+                                className="size-8 rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900"
                                 size="icon"
                                 onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
                                 disabled={isLoading || currentPage === 1}
@@ -161,7 +165,7 @@ export function LogsDataTable({
                             </Button>
                             <Button
                                 variant="outline"
-                                className="size-8 rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm"
+                                className="size-8 rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900"
                                 size="icon"
                                 onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
                                 disabled={isLoading || currentPage === totalPages}

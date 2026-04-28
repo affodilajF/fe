@@ -206,7 +206,7 @@ export default function ModelState({
         </h2>
         <p className="text-slate-500 mb-10 max-w-xl mx-auto leading-relaxed font-normal">
           No AI model is running yet. <br />
-          Upload your video and let our system analyze it for you automatically.
+          Upload your image or video and let our system analyze it for you automatically.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto relative z-10">

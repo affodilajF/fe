@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import {
     DetectionResults
-} from "../app/dashboard/upload-form/api";
+} from "../app/dashboard/upload-detect/api";
 import { Check, X, Shield, User, HardHat, Footprints, Grid3X3, Hash, Clock } from "lucide-react";
 import { Button } from "./ui/button";
 import { formatVideoDateTime, getVideoTime } from "@/lib/date-utils";

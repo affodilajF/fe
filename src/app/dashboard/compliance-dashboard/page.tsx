@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { getDetectionResultListData, DetectionJob } from "./api";
-import { ClipboardList, Filter, X, Search, Eraser } from "lucide-react";
+import { ClipboardList, Filter, X, Search, Eraser, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { LogsDataTable } from "@/components/ui/data-table";
 import {
@@ -22,14 +22,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChartPie } from "lucide-react";
 import { ComplianceChart } from "./charts";
+import { OperationalSummary } from "./charts/OperationalSummary";
 
 export default function LogsPage() {
   const [detectionJobs, setDetectionJobs] = useState<DetectionJob[]>([]);
   const [isHistoryLoading, setIsHistoryLoading] = useState(true);
-  const [totalDetections, setTotalDetections] = useState(0);
   const [filters, setFilters] = useState<PPEFilters>(INITIAL_FILTERS);
   const [showFilters, setShowFilters] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   const fetchDetectionListData = async () => {
     setIsHistoryLoading(true);
@@ -38,7 +39,6 @@ export default function LogsPage() {
 
       if (res.success && res.data) {
         setDetectionJobs(res.data.detection_jobs || []);
-        setTotalDetections(res.data.total_detection_result || 0);
       } else if (!res.success) {
         toast.error(res.message || "Failed to fetch data");
       }
@@ -78,79 +78,58 @@ export default function LogsPage() {
 
   const resetFilters = () => setFilters(INITIAL_FILTERS);
 
-  // Helper for filter select
-  const PpeSelect = ({
-    label,
-    field
-  }: {
-    label: string,
-    field: keyof Omit<PPEFilters, 'search' | 'startDate' | 'endDate'>
-  }) => (
-    <div className="flex flex-col gap-1.5 min-w-[110px] flex-1 sm:flex-none">
-      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
-        {label}
-      </label>
-      <Select
-        value={filters[field]}
-        onValueChange={(val: any) => setFilters(f => ({ ...f, [field]: val }))}
-      >
-        <SelectTrigger className="h-9 bg-white border-slate-200 text-xs font-medium focus:ring-slate-100">
-          <SelectValue placeholder="All" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All</SelectItem>
-          <SelectItem value="pass" className="text-emerald-600 font-medium">Pass</SelectItem>
-          <SelectItem value="fail" className="text-rose-600 font-medium">Fail</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-
   return (
     <div className="flex flex-col px-6 py-8 gap-6 max-w-full">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-gray-100 rounded-xl text-slate-600 border border-slate-200 shadow-sm">
+          <div className="p-3 bg-gray-100 rounded-xl text-slate-600 border border-slate-200">
             <ClipboardList className="w-5 h-5" />
           </div>
           <div className="flex flex-col">
             <p className="text-sm text-slate-500 font-medium tracking-tight">
-              Total: <span className="text-slate-900 font-bold">{filteredDetections.length}</span> personnel detected.
+              Total: <span className="text-slate-900 font-bold">{filteredDetections.length}</span> workers detected.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl border border-slate-200">
+          {/* Filter Toggle */}
           <Button
-            variant={showStats ? "secondary" : "outline"}
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              const newState = !showFilters;
+              setShowFilters(newState);
+              if (!newState) resetFilters();
+            }}
+            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showFilters ? 'bg-white text-slate-900 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
+          >
+            <Filter className="w-3.5 h-3.5" />
+            Filters
+          </Button>
+
+          {/* Summary Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowSummary(!showSummary)}
+            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showSummary ? 'bg-white text-slate-900 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Summary
+          </Button>
+
+          {/* Stats Toggle */}
+          <Button
+            variant="ghost"
             size="sm"
             onClick={() => setShowStats(!showStats)}
-            className={`h-9 gap-2 font-semibold px-4 rounded-lg transition-all ${showStats ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'text-slate-600'}`}
+            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showStats ? 'bg-white text-slate-900 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
           >
-            <ChartPie className="w-4 h-4" />
-            {showStats ? "Hide Stats" : "Stats"}
+            <ChartPie className="w-3.5 h-3.5" />
+            Stats
           </Button>
-          <Button
-            variant={showFilters ? "secondary" : "outline"}
-            size="sm"
-            onClick={() => setShowFilters(!showFilters)}
-            className={`h-9 gap-2 font-semibold px-4 rounded-lg transition-all ${showFilters ? 'bg-slate-200 text-slate-800' : 'text-slate-600'}`}
-          >
-            <Filter className="w-4 h-4" />
-            {showFilters ? "Hide Filters" : "Filters"}
-          </Button>
-          {JSON.stringify(filters) !== JSON.stringify(INITIAL_FILTERS) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={resetFilters}
-              className="h-9 text-slate-500 hover:text-rose-600 hover:bg-rose-50 gap-2 font-medium px-3"
-            >
-              <Eraser className="w-4 h-4" />
-              Reset
-            </Button>
-          )}
         </div>
       </div>
 
@@ -201,15 +180,37 @@ export default function LogsPage() {
                   className="h-9 bg-white border-slate-200 text-xs focus-visible:ring-slate-100 cursor-pointer"
                 />
               </div>
+
+              {/* Reset Button (Mobile/Desktop adaptive) */}
+              <div className="flex flex-col gap-1.5 min-w-[100px]">
+                <label className="text-[10px] font-bold text-transparent select-none uppercase tracking-wider px-1">
+                  Reset
+                </label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={resetFilters}
+                  disabled={JSON.stringify(filters) === JSON.stringify(INITIAL_FILTERS)}
+                  className="h-9 text-slate-500 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 gap-2 font-semibold px-4 rounded-lg transition-all border-slate-200 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-500"
+                >
+                  <Eraser className="w-4 h-4" />
+                  Reset
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
+      {/* Summary Section */}
+      {showSummary && (
+        <OperationalSummary stats={stats} filters={filters} />
+      )}
+
       {/* Stats Section */}
       {showStats && (
         <div className="animate-in fade-in slide-in-from-top-4 duration-500">
-          <ComplianceChart stats={stats} />
+          <ComplianceChart stats={stats} isLoading={isHistoryLoading} />
         </div>
       )}
 

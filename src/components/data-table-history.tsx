@@ -16,7 +16,7 @@ import {
 } from "@tanstack/react-table";
 import { z } from "zod";
 import { Eye } from "lucide-react";
-import { DetectionJob } from "@/app/dashboard/upload-form/api";
+import { DetectionJob } from "@/app/dashboard/upload-detect/api";
 import { formatVideoDateTime, getVideoDate, getVideoTime } from "@/lib/date-utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { memo } from "react";
@@ -101,24 +101,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             );
         }
     },
-    // {
-    //     accessorKey: "job_status",
-    //     header: "Status",
-    //     cell: ({ row }) => (
-    //         <Badge variant="outline" className="text-slate-600 bg-white px-2.5 py-1 whitespace-nowrap flex items-center gap-1.5 w-fit border-slate-200">
-    //             {row.original.job_status === "Done" ? (
-    //                 <IconCircleCheckFilled className="w-3.5 h-3.5 text-emerald-500" />
-    //             ) : (
-    //                 <IconLoader className="w-3.5 h-3.5 animate-spin text-blue-500" />
-    //             )}
-    //             {row.original.job_status}
-    //         </Badge>
-    //     ),
-    // },
     {
         accessorKey: "created_at",
-        header: "created at",
-        cell: ({ row }) => <div className="text-sm font-medium text-slate-600">{formatVideoDateTime(row.original.created_at)}</div>,
+        header: () => <div className="text-center uppercase text-[10px] tracking-widest text-gray-800">Created At</div>,
+        cell: ({ row }) => <div className="text-[10px] font-medium text-slate-500 text-center">{row.original.created_at ? formatVideoDateTime(row.original.created_at) : "-"}</div>,
     },
     {
         id: "actions",

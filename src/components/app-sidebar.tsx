@@ -28,13 +28,13 @@ const data = {
   },
   navMain: [
     {
-      title: "Upload Form",
-      url: "/dashboard/upload-form",
+      title: "Upload & Detect",
+      url: "/dashboard/upload-detect",
       icon: IconReport,
     },
     {
-      title: "Logs",
-      url: "/dashboard/logs",
+      title: "Compliance Dashboard",
+      url: "/dashboard/compliance-dashboard",
       icon: IconReport,
     },
   ],
@@ -52,7 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/dashboard/upload-form">
+              <Link href="/dashboard/upload-detect">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
                   yayaya

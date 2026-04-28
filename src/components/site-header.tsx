@@ -10,6 +10,8 @@ const TITLE_MAP: Record<string, string> = {
   analytics: "Analytics",
   logs: "Reports",
   dashboard: "Dashboard",
+  "compliance-dashboard": "Compliance Dashboard",
+  "upload-detect": "AI Detection System",
 }
 
 export function SiteHeader() {
