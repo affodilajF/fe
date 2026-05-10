@@ -22,7 +22,6 @@ export default function SettingsDialog() {
   const [lineTop, setLineTop] = useState<number | undefined>();
   const [lineBottom, setLineBottom] = useState<number | undefined>();
   const [activeLine, setActiveLine] = useState<"top" | "bottom" | null>();
-  const [frameInterval, setFrameInterval] = useState<number>(30);
   const [previewFile, setPreviewFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -39,7 +38,6 @@ export default function SettingsDialog() {
         console.log("API RESPONSE:", res);
         setLineTop(res.data.top_roi);
         setLineBottom(res.data.bottom_roi);
-        setFrameInterval(res.data.frame_interval);
       } else {
         showError(res.message);
         setOpen(false);
@@ -127,7 +125,6 @@ export default function SettingsDialog() {
         const res = await setDetectionParameter({
           top_roi: Math.round(lineTop),
           bottom_roi: Math.round(lineBottom),
-          frame_interval: frameInterval,
         });
 
         console.log("API RESPONSE:", res);
@@ -140,7 +137,7 @@ export default function SettingsDialog() {
           showError(res.message);
         }
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Terjadi kesalahan saat menyimpan pengaturan:", error);
       showError(error.message);
@@ -332,28 +329,6 @@ export default function SettingsDialog() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
-            <Label
-              htmlFor="n_frame_detection"
-              className="text-slate-700 font-semibold text-sm"
-            >
-              Frame Detection Interval
-            </Label>
-            <Input
-              type="number"
-              id="n_frame_detection"
-              placeholder="30"
-              value={frameInterval}
-              min={1}
-              max={60}
-              onChange={(e) => setFrameInterval(Number(e.target.value))}
-              className="bg-slate-50 border-slate-200 text-slate-800 transition-colors focus-visible:ring-blue-100 h-9 text-sm"
-            />
-            <p className="text-[10px] text-slate-500 italic leading-snug">
-              Enter the number n, for example 5 means the system detects every 5
-              frames.
-            </p>
-          </div>
         </div>
 
         <DialogFooter className="mt-2 gap-2 sm:gap-0 pt-4 border-t border-slate-100">

@@ -4,13 +4,11 @@ import { safeFetch, ApiResponse, BASE_URL } from "@/lib/api-response";
 // detection parameter settings 
 export interface DetectionParameterRequest {
   top_roi: number,
-  bottom_roi: number,
-  frame_interval: number
+  bottom_roi: number
 }
 export interface DetectionParameterResponse {
   top_roi: number,
-  bottom_roi: number,
-  frame_interval: number
+  bottom_roi: number
 }
 
 export function setDetectionParameter(
