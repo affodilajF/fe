@@ -22,6 +22,7 @@ import {
 import { Check, X, Shield, User, HardHat, Footprints, Grid3X3, Hash, Clock } from "lucide-react";
 import { Button } from "./ui/button";
 import { formatVideoDateTime, getVideoTime } from "@/lib/date-utils";
+import { t } from "@/lib/translations";
 
 interface ComplianceDetailDialogProps {
     items: DetectionResults | null;
@@ -98,37 +99,37 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                                 <TableRow className="hover:bg-transparent border-slate-200">
                                     <TableHead className="w-24 font-bold text-slate-500 uppercase text-[10px] tracking-widest text-center">
                                         <div className="flex items-center justify-center gap-2">
-                                            <User className="w-3 h-3" /> Person
+                                            <User className="w-3 h-3" /> {t("person")}
                                         </div>
                                     </TableHead>
                                     <TableHead className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">
                                         <div className="flex items-center gap-2">
-                                            <User className="w-3 h-3" /> Apron
+                                            <User className="w-3 h-3" /> {t("apron")}
                                         </div>
                                     </TableHead>
                                     <TableHead className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">
                                         <div className="flex items-center gap-2">
-                                            <Shield className="w-3 h-3" /> Gloves
+                                            <Shield className="w-3 h-3" /> {t("gloves")}
                                         </div>
                                     </TableHead>
                                     <TableHead className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">
                                         <div className="flex items-center gap-2">
-                                            <Footprints className="w-3 h-3" /> Boots
+                                            <Footprints className="w-3 h-3" /> {t("boots")}
                                         </div>
                                     </TableHead>
                                     <TableHead className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">
                                         <div className="flex items-center gap-2">
-                                            <Shield className="w-3 h-3" /> Mask
+                                            <Shield className="w-3 h-3" /> {t("mask")}
                                         </div>
                                     </TableHead>
                                     <TableHead className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">
                                         <div className="flex items-center gap-2">
-                                            <HardHat className="w-3 h-3" /> Hairnet
+                                            <HardHat className="w-3 h-3" /> {t("hairnet")}
                                         </div>
                                     </TableHead>
                                     <TableHead className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">
                                         <div className="flex items-center gap-2">
-                                            <Clock className="w-3 h-3" /> Time
+                                            <Clock className="w-3 h-3" /> {t("time")}
                                         </div>
                                     </TableHead>
                                 </TableRow>
@@ -153,7 +154,7 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                                 ) : (
                                     <TableRow>
                                         <TableCell colSpan={6} className="h-24 text-center text-slate-400 italic font-medium">
-                                            No detailed compliance data available for this detection result.
+                                            {t("no_detail_data")}
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -171,7 +172,7 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
 
                                             {/* Label */}
                                             <div className="bg-slate-100 border border-slate-200 rounded-lg py-1.5 px-3 flex items-center justify-center  ">
-                                                <span className="text-[11px] font-bold text-slate-700">Person {index + 1}</span>
+                                                <span className="text-[11px] font-bold text-slate-700">{t("person")} {index + 1}</span>
                                             </div>
 
                                             {/* Photo Card */}
@@ -190,7 +191,7 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                                     ) : null)
                             ) : (
                                 <div className="w-full py-8 border-2 border-dashed border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 italic text-sm">
-                                    No visuals available
+                                    {t("no_visuals")}
                                 </div>
                             )}
                         </div>
@@ -203,7 +204,7 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                         variant="outline"
                         className="flex items-center gap-2 hover:bg-slate-100 text-slate-600 transition rounded-lg border-slate-200"
                     >
-                        <span className="text-sm font-semibold">Close Report</span>
+                        <span className="text-sm font-semibold">{t("close_report")}</span>
                     </Button>
                 </div>
             </DialogContent>
@@ -214,7 +215,7 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                     className="w-screen h-screen p-0 overflow-hidden border-none bg-transparent flex items-center justify-center shadow-none [&>button]:hidden outline-none max-w-none"
                     onClick={() => setZoomImage(null)}
                 >
-                    <DialogTitle className="sr-only">Detailed Image View</DialogTitle>
+                    <DialogTitle className="sr-only">{t("detailed_image_view")}</DialogTitle>
                     {zoomImage && (
                         <img
                             src={zoomImage}

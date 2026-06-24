@@ -3,6 +3,7 @@
 import { Users, CheckCircle, AlertTriangle, TrendingUp, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ComplianceStats } from "../filter_logic";
+import { t } from "@/lib/translations";
 
 interface SummaryCardsProps {
     stats: ComplianceStats;
@@ -19,15 +20,15 @@ export function SummaryCards({ stats, isLoading }: SummaryCardsProps) {
                 </div>
                 <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Total Workers</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">{t("total_workers")}</span>
                         <TooltipProvider delayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Info className="w-3 h-3 text-slate-300 cursor-help shrink-0" />
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-[200px] p-3 text-xs bg-slate-800 text-white border-none">
-                                    <p className="font-bold mb-1">Total Workers</p>
-                                    <p className="opacity-80">Total individuals detected based on active filters.</p>
+                                    <p className="font-bold mb-1">{t("total_workers")}</p>
+                                    <p className="opacity-80">{t("total_workers_desc")}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
@@ -43,15 +44,15 @@ export function SummaryCards({ stats, isLoading }: SummaryCardsProps) {
                 </div>
                 <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Compliant Workers</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">{t("compliant_workers")}</span>
                         <TooltipProvider delayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Info className="w-3 h-3 text-slate-300 cursor-help shrink-0" />
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-[200px] p-3 text-xs bg-slate-800 text-white border-none">
-                                    <p className="font-bold mb-1">Compliant Workers</p>
-                                    <p className="opacity-80">Number of persons wearing COMPLETE safety equipment.</p>
+                                    <p className="font-bold mb-1">{t("compliant_workers")}</p>
+                                    <p className="opacity-80">{t("compliant_workers_desc")}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
@@ -67,15 +68,15 @@ export function SummaryCards({ stats, isLoading }: SummaryCardsProps) {
                 </div>
                 <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Non-Compliant Workers</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">{t("non_compliant_workers")}</span>
                         <TooltipProvider delayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Info className="w-3 h-3 text-slate-300 cursor-help shrink-0" />
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-[200px] p-3 text-xs bg-slate-800 text-white border-none">
-                                    <p className="font-bold mb-1">Non-Compliant Workers</p>
-                                    <p className="opacity-80">Number of persons missing at least one PPE component.</p>
+                                    <p className="font-bold mb-1">{t("non_compliant_workers")}</p>
+                                    <p className="opacity-80">{t("non_compliant_workers_desc")}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
@@ -93,15 +94,15 @@ export function SummaryCards({ stats, isLoading }: SummaryCardsProps) {
                 </div>
                 <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Compliance Rate</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">{t("compliance_rate")}</span>
                         <TooltipProvider delayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Info className="w-3 h-3 text-slate-300 cursor-help shrink-0" />
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-[250px] p-3 text-xs bg-slate-800 text-white border-none">
-                                    <p className="font-bold mb-1">Adherence percentage</p>
-                                    <code className="block bg-black/30 p-1.5 rounded text-[10px]">(Compilant Workers / Total Workers) × 100</code>
+                                    <p className="font-bold mb-1">{t("adherence_percentage")}</p>
+                                    <code className="block bg-black/30 p-1.5 rounded text-[10px]">({t("compliant_workers")} / {t("total_workers")}) × 100</code>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>

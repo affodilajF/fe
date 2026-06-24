@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { t } from "@/lib/translations";
 
 interface AddDataDialogVideoProps {
   onSuccess?: () => void;
@@ -159,7 +160,7 @@ export default function AddDataDialogVideo({
             onClick={() => setOpen(true)}
             className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition"
           >
-            + Run Video Analysis
+            + {t("run_video_analysis")}
           </Button>
         )}
       </DialogTrigger>
@@ -167,10 +168,10 @@ export default function AddDataDialogVideo({
       <DialogContent className="w-full max-w-xl transition-all duration-400 ease-out animate-in fade-in zoom-in-50 rounded-2xl p-6 sm:p-7">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-slate-800">
-            Video Analysis
+            {t("video_analysis")}
           </DialogTitle>
           <DialogDescription className="text-slate-500">
-            Fill in the details and upload the recording to run AI detection analysis.
+            {t("video_analysis_desc")}
           </DialogDescription>
         </DialogHeader>
 
@@ -180,12 +181,12 @@ export default function AddDataDialogVideo({
               htmlFor="nama"
               className="text-slate-700 font-semibold text-sm transition-colors"
             >
-              Title
+              {t("title")}
             </Label>
             <Input
               type="text"
               id="nama"
-              placeholder="Example: Room No 3"
+              placeholder={t("example_room")}
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="bg-slate-50 border-slate-200 text-slate-800 transition-colors focus-visible:ring-blue-100 h-10 text-sm"
@@ -198,13 +199,14 @@ export default function AddDataDialogVideo({
                 htmlFor="tanggal"
                 className="text-slate-700 font-semibold text-sm transition-colors"
               >
-                Video Date
+                {t("video_date")}
               </Label>
               <div className="relative">
                 <Input
                   type="date"
                   id="tanggal"
                   value={date}
+                  max={new Date().toLocaleDateString('sv')}
                   onChange={(e) => setDate(e.target.value)}
                   className="bg-slate-50 border-slate-200 text-slate-800 transition-colors focus-visible:ring-blue-100 h-10 text-sm pl-9 cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer hover:bg-white"
                 />
@@ -217,14 +219,14 @@ export default function AddDataDialogVideo({
                 htmlFor="jam"
                 className="text-slate-700 font-semibold text-sm transition-colors"
               >
-                Video Time
+                {t("video_time")}
               </Label>
               <div className="flex items-center gap-2">
                 <Select value={hour} onValueChange={setHour}>
                   <SelectTrigger className="bg-slate-50 border-slate-200 text-slate-800 transition-colors focus:ring-blue-100 h-10 w-full text-sm">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-slate-400" />
-                      <SelectValue placeholder="Hour" />
+                      <SelectValue placeholder={t("hour")} />
                     </div>
                   </SelectTrigger>
                   <SelectContent className="max-h-[200px]">
@@ -243,7 +245,7 @@ export default function AddDataDialogVideo({
 
                 <Select value={minute} onValueChange={setMinute}>
                   <SelectTrigger className="bg-slate-50 border-slate-200 text-slate-800 transition-colors focus:ring-blue-100 h-10 w-full text-sm">
-                    <SelectValue placeholder="Min" />
+                    <SelectValue placeholder={t("minute")} />
                   </SelectTrigger>
                   <SelectContent className="max-h-[200px]">
                     {Array.from({ length: 60 }).map((_, i) => {
@@ -266,15 +268,32 @@ export default function AddDataDialogVideo({
                 htmlFor="video"
                 className="text-slate-700 font-semibold text-sm"
               >
-                Upload Video Recording
+                {t("upload_video")}
               </Label>
-              <Input
-                type="file"
-                id="video"
-                accept="video/*"
-                onChange={handleVideoChange}
-                className="bg-slate-50 border-slate-200 text-slate-500 transition-colors focus-visible:ring-indigo-500 file:bg-slate-200 file:text-slate-700 file:font-semibold file:border-0 file:mr-4 file:px-3 file:py-1 file:rounded-md hover:file:bg-slate-300 text-sm h-10 py-1.5"
-              />
+              <div className="flex items-center gap-2 w-full">
+                <div className="flex-1 flex items-center bg-slate-50 border border-slate-200 rounded-md h-10 px-3 overflow-hidden">
+                  <span className="text-sm text-slate-500 truncate">
+                    {videoFile ? videoFile.name : t("no_file_chosen")}
+                  </span>
+                </div>
+                <div className="relative shrink-0">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="h-10 px-4 bg-slate-200 text-slate-700 hover:bg-slate-300 border-0 font-semibold flex items-center gap-2 text-sm"
+                  >
+                    <Film className="w-4 h-4" />
+                    {t("browse")}
+                  </Button>
+                  <Input
+                    type="file"
+                    id="video"
+                    accept="video/*"
+                    onChange={handleVideoChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </div>
+              </div>
             </div>
 
             {thumbnail && (
@@ -288,7 +307,7 @@ export default function AddDataDialogVideo({
 
                   <div className="absolute top-3 left-1/2 -translate-x-1/2 flex flex-col items-center animate-pulse text-white/90 pointer-events-none z-10">
                     <span className="text-[9px] font-bold tracking-widest uppercase mb-0.5 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm shadow-sm ring-1 ring-white/20">
-                      Entry Direction
+                      {t("entry_direction")}
                     </span>
                     <ArrowDown className="w-5 h-5 drop-shadow-md" />
                   </div>
@@ -302,7 +321,7 @@ export default function AddDataDialogVideo({
                       }}
                     >
                       <div className="text-red-100 text-[9px] font-bold uppercase tracking-widest bg-red-900/70 backdrop-blur-[2px] px-2 py-0.5 rounded shadow-sm border border-red-500/40">
-                        Detection Zone
+                        {t("detection_zone")}
                       </div>
                     </div>
                   )}
@@ -323,7 +342,7 @@ export default function AddDataDialogVideo({
                 </div>
                 <div className="mt-1">
                   <p className="text-[12px] text-slate-600 italic leading-snug px-1">
-                    Open settings to set the detection zone.
+                    {t("settings_zone_hint")}
                   </p>
                 </div>
               </div>
@@ -337,7 +356,7 @@ export default function AddDataDialogVideo({
               variant="ghost"
               className="text-slate-600 hover:bg-slate-100 border-1"
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </DialogClose>
           <Button
@@ -352,7 +371,7 @@ export default function AddDataDialogVideo({
             }
             className="bg-gray-700 hover:bg-gray-800 text-white font-semibold transition disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Processing..." : "Run Detection Analysis"}
+            {isLoading ? t("processing") : t("run_detection")}
           </Button>
         </DialogFooter>
       </DialogContent>

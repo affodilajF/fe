@@ -14,9 +14,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Settings, Camera, ArrowDown, ArrowUp } from "lucide-react";
+import { Settings, Camera, ArrowDown } from "lucide-react";
 import { setDetectionParameter, getDetectionParameter } from "../api";
 import { useGlobalErrorStore } from "@/lib/error-store";
+import { t } from "@/lib/translations";
 
 export default function SettingsDialog() {
   const [lineTop, setLineTop] = useState<number | undefined>();
@@ -154,17 +155,17 @@ export default function SettingsDialog() {
           className="flex items-center gap-2 hover:bg-slate-100 text-slate-600 transition shadow-sm rounded-lg border-slate-200"
         >
           <Settings className="w-4 h-4" />
-          <span className="text-sm font-semibold">Settings</span>
+          <span className="text-sm font-semibold">{t("settings")}</span>
         </Button>
       </DialogTrigger>
 
       <DialogContent className="w-full max-w-xl transition-all duration-400 ease-out animate-in fade-in zoom-in-50 rounded-2xl p-6 sm:p-7">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-slate-800">
-            Detection Parameters Setting
+            {t("detection_params_title")}
           </DialogTitle>
           <DialogDescription className="text-slate-500">
-            Configuration for detection model
+            {t("detection_params_desc")}
           </DialogDescription>
         </DialogHeader>
 
@@ -172,7 +173,7 @@ export default function SettingsDialog() {
           <div className="flex flex-col gap-2.5">
             <div className="flex justify-between items-center mb-1">
               <Label className="text-slate-700 font-semibold">
-                Detection Zone Boundaries
+                {t("detection_zone_boundaries")}
               </Label>
               {lineTop !== undefined && lineBottom !== undefined && (
                 <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 flex items-center justify-center text-center px-1.5 py-0.5 rounded-md">
@@ -188,9 +189,7 @@ export default function SettingsDialog() {
                 <div className="flex items-center gap-2 w-full">
                   <div className="flex-1 items-center bg-white border border-slate-200 rounded-md h-7 px-2 overflow-hidden">
                     <span className="text-xs text-slate-500 truncate leading-none">
-                      {previewFile
-                        ? previewFile.name
-                        : "Choose image or video to preview"}
+                      {previewFile ? previewFile.name : t("choose_preview")}
                     </span>
                   </div>
                   <div className="relative">
@@ -201,7 +200,7 @@ export default function SettingsDialog() {
                       className="text-xs h-7 px-2 text-xs bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 font-semibold flex items-center gap-1"
                     >
                       <Camera className="w-3 h-3" />
-                      Browse
+                      {t("browse")}
                     </Button>
                     <Input
                       type="file"
@@ -241,7 +240,7 @@ export default function SettingsDialog() {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center opacity-30 pointer-events-none transition-opacity group-hover:opacity-20">
                     <Camera className="w-8 h-8 text-white mb-2" />
-                    <p className="text-white text-[10px]">Visual Area</p>
+                    <p className="text-white text-[10px]">{t("visual_area")}</p>
                   </div>
                 )}
 
@@ -249,7 +248,7 @@ export default function SettingsDialog() {
                 {
                   <div className="absolute top-3 left-1/2 -translate-x-1/2 flex flex-col items-center animate-pulse text-white/90 pointer-events-none z-0">
                     <span className="text-[9px] font-bold tracking-widest uppercase mb-0.5 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm shadow-sm ring-1 ring-white/20">
-                      Entry Direction
+                      {t("entry_direction")}
                     </span>
                     <ArrowDown className="w-5 h-5 drop-shadow-md" />
                   </div>
@@ -273,7 +272,7 @@ export default function SettingsDialog() {
                     }}
                   >
                     <div className="text-red-100 text-[9px] font-bold uppercase tracking-widest bg-red-900/70 backdrop-blur-[2px] px-2 py-0.5 rounded shadow-sm border border-red-500/40">
-                      Detection Zone
+                      {t("detection_zone")}
                     </div>
                   </div>
                 )}
@@ -302,33 +301,12 @@ export default function SettingsDialog() {
                   </div>
                 </div>
               </div>
-
-              {/* Arah Kendaraan Selection directly below the box */}
-              {/* <div className="flex items-center justify-between pt-1">
-                                <span className="text-[11px] font-semibold text-slate-600 ml-1">Set Arah Masuk:</span>
-                                <div className="flex bg-slate-200/70 p-0.5 rounded-lg border border-slate-200/50">
-                                    <button
-                                        onClick={() => setEntryDirection("top")}
-                                        className={`px-3 py-1 text-[10px] font-bold rounded-md shadow-sm transition-all focus:outline-none ${entryDirection === 'top' ? 'bg-white text-gray-700 ring-1 ring-slate-200/80 shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200'}`}
-                                    >
-                                        Atas
-                                    </button>
-                                    <button
-                                        onClick={() => setEntryDirection("bottom")}
-                                        className={`px-3 py-1 text-[10px] font-bold rounded-md shadow-sm transition-all focus:outline-none ${entryDirection === 'bottom' ? 'bg-white text-gray-700 ring-1 ring-slate-200/80 shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200'}`}
-                                    >
-                                        Bawah
-                                    </button>
-                                </div>
-                            </div> */}
             </div>
 
             <p className="text-[10px] text-slate-500 italic leading-snug px-1">
-              Hold and drag the line for the zone boundary. Entry detection is
-              always top to bottom.
+              {t("zone_boundary_hint")}
             </p>
           </div>
-
         </div>
 
         <DialogFooter className="mt-2 gap-2 sm:gap-0 pt-4 border-t border-slate-100">
@@ -337,7 +315,7 @@ export default function SettingsDialog() {
               variant="ghost"
               className="text-slate-600 hover:bg-slate-100 border-1"
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </DialogClose>
           <Button
@@ -345,7 +323,7 @@ export default function SettingsDialog() {
             disabled={isLoading}
             className="bg-gray-700 hover:bg-gray-800 text-white shadow-md font-semibold transition"
           >
-            {isLoading ? "Saving..." : "Save Configuration"}
+            {isLoading ? t("saving") : t("save_configuration")}
           </Button>
         </DialogFooter>
       </DialogContent>

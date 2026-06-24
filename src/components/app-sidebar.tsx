@@ -20,29 +20,30 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const data = {
-  user: {
-    name: "",
-    email: "",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Upload & Detect",
-      url: "/dashboard/upload-detect",
-      icon: IconReport,
-    },
-    {
-      title: "Compliance Dashboard",
-      url: "/dashboard/compliance-dashboard",
-      icon: IconReport,
-    },
-  ],
-  navSecondary: [
-  ],
-};
+import { t } from "@/lib/translations";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const data = {
+    user: {
+      name: "",
+      email: "",
+      avatar: "/avatars/shadcn.jpg",
+    },
+    navMain: [
+      {
+        title: t("ai_detection_system"),
+        url: "/dashboard/upload-detect",
+        icon: IconReport,
+      },
+      {
+        title: t("compliance_dashboard"),
+        url: "/dashboard/compliance-dashboard-v2",
+        icon: IconReport,
+      },
+    ],
+    navSecondary: [],
+  };
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader >
@@ -55,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <Link href="/dashboard/upload-detect">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
-                  yayaya
+                  PPE Monitor
                 </span>
               </Link>
             </SidebarMenuButton>

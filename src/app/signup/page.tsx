@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card";
 
 import { register } from "./api";
+import { t } from "@/lib/translations";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -79,7 +80,7 @@ export default function RegisterPage() {
 
         <Card className="border-border/40 bg-background/60 backdrop-blur-xl shadow-2xl">
           <CardHeader>
-            <CardTitle className="text-xl">Create New Account</CardTitle>
+            <CardTitle className="text-xl">{t("create_account")}</CardTitle>
           </CardHeader>
           <CardContent>
             {errorMsg && (
@@ -89,13 +90,13 @@ export default function RegisterPage() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Username</Label>
+                <Label htmlFor="name">{t("username")}</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="username"
                     type="text"
-                    placeholder="Input username"
+                    placeholder={t("input_username")}
                     className="pl-10"
                     required
                     value={formData.username}
@@ -108,7 +109,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -124,7 +125,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -155,7 +156,7 @@ export default function RegisterPage() {
                   <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                 ) : (
                   <>
-                    Sign Up
+                    {t("sign_up")}
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
@@ -164,9 +165,9 @@ export default function RegisterPage() {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 border-t border-border/10 mt-2 pt-6">
             <div className="text-sm text-center text-muted-foreground">
-              Already have an account?{" "}
+              {t("have_account")}{" "}
               <Link href="/login" className="font-semibold text-primary hover:underline underline-offset-4">
-                Login now
+                {t("login_now")}
               </Link>
             </div>
           </CardFooter>

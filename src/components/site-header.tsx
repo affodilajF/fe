@@ -4,19 +4,21 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-
-const TITLE_MAP: Record<string, string> = {
-  streaming: "Video Streaming",
-  analytics: "Analytics",
-  logs: "Reports",
-  dashboard: "Dashboard",
-  "compliance-dashboard": "Compliance Dashboard",
-  "upload-detect": "AI Detection System",
-}
+import { t, CURRENT_LANG, setLanguage } from "@/lib/translations"
 
 export function SiteHeader() {
   const pathname = usePathname()
   const lastSegment = pathname?.split("/").filter(Boolean).pop() ?? ""
+
+  const TITLE_MAP: Record<string, string> = {
+    streaming: t("video_streaming"),
+    analytics: t("analytics"),
+    logs: t("reports"),
+    dashboard: t("dashboard"),
+    "compliance-dashboard-v2": t("compliance_dashboard"),
+    "upload-detect": t("ai_detection_system"),
+  }
+
   const title = TITLE_MAP[lastSegment] ?? capitalize(lastSegment)
 
   return (
@@ -29,6 +31,31 @@ export function SiteHeader() {
         />
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="ml-auto flex items-center gap-2">
+          {/* Language Toggle */}
+          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setLanguage("id")}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition ${
+                CURRENT_LANG === "id"
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              ID
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition ${
+                CURRENT_LANG === "en"
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              EN
+            </button>
+          </div>
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
             <a
               href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"

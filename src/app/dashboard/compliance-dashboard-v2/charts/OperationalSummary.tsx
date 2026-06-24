@@ -3,25 +3,24 @@
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useMemo } from "react";
-import { ComplianceStats, PPEFilters, generateVerbalSummary } from "../filter_logic";
+import { ComplianceStats, PPEFilters } from "../filter_logic";
+import { t } from "@/lib/translations";
 
 interface OperationalSummaryProps {
     stats: ComplianceStats;
     filters: PPEFilters;
+    manualSummary?: string;
 }
 
-export function OperationalSummary({ stats, filters }: OperationalSummaryProps) {
-    const verbalSummary = useMemo(() => {
-        return generateVerbalSummary(stats, filters);
-    }, [stats, filters]);
+export function OperationalSummary({ manualSummary }: OperationalSummaryProps) {
+    const verbalSummary = manualSummary || t("no_summary_provided");
 
     return (
         <div className="animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="bg-white border border-slate-200 rounded-3xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                     <FileText className="w-5 h-5 text-amber-500" />
-                    <h3 className="text-lg font-bold text-slate-800">Summary Analysis</h3>
+                    <h3 className="text-lg font-bold text-slate-800">{t("summary_analysis")}</h3>
                 </div>
 
                 <div className="w-full p-6 rounded-2xl bg-slate-50 border border-slate-100 text-slate-700 text-sm leading-relaxed font-medium whitespace-pre-wrap">
@@ -36,7 +35,7 @@ export function OperationalSummary({ stats, filters }: OperationalSummaryProps) 
                             return part;
                         })
                     ) : (
-                        "Auto-generating summary based on current data..."
+                        t("processing")
                     )}
                 </div>
 

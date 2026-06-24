@@ -1,16 +1,29 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { getDetectionResultListData, DetectionJob } from "./api";
-import { ClipboardList, Filter, X, Search, Eraser, FileText } from "lucide-react";
+import {
+  getDetectionResultListData,
+  DetectionJob,
+  getComplianceStatsData,
+} from "./api";
+import {
+  ClipboardList,
+  Filter,
+  X,
+  Search,
+  Eraser,
+  FileText,
+  Loader2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { LogsDataTable } from "@/components/ui/data-table";
 import {
   INITIAL_FILTERS,
   filterDetections,
   PPEFilters,
-  getComplianceStats
+  ComplianceStats,
 } from "./filter_logic";
+import { t } from "@/lib/translations";
 import {
   Select,
   SelectContent,
@@ -32,6 +45,13 @@ export default function LogsPage() {
   const [showStats, setShowStats] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
 
+  // Backend stats state
+  const [backendStats, setBackendStats] = useState<ComplianceStats | null>(
+    null,
+  );
+  const [backendSummary, setBackendSummary] = useState<string>("");
+  const [isStatsLoading, setIsStatsLoading] = useState(false);
+
   const fetchDetectionListData = async () => {
     setIsHistoryLoading(true);
     try {
@@ -50,9 +70,39 @@ export default function LogsPage() {
     }
   };
 
+  const fetchStatsData = async () => {
+    setIsStatsLoading(true);
+    try {
+      const res = await getComplianceStatsData(
+        filters.search,
+        filters.startDate,
+        filters.endDate,
+      );
+
+      if (res.success && res.data) {
+        // Reconstruct stats object by merging trends
+        const statsObj: ComplianceStats = {
+          ...res.data.stats,
+          dailyTrend: res.data.trends.dailyTrend || [],
+          hourlyTrend: res.data.trends.hourlyTrend || [],
+        };
+        setBackendStats(statsObj);
+        setBackendSummary(res.data.summary || "");
+      }
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+    } finally {
+      setIsStatsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchDetectionListData();
   }, []);
+
+  useEffect(() => {
+    fetchStatsData();
+  }, [filters]);
 
   const flattenedDetections = useMemo(() => {
     if (!detectionJobs || !Array.isArray(detectionJobs)) return [];
@@ -64,7 +114,7 @@ export default function LogsPage() {
           jobName: job.name,
           data_datetime: job.data_datetime,
         };
-      })
+      }),
     );
   }, [detectionJobs]);
 
@@ -72,14 +122,10 @@ export default function LogsPage() {
     return filterDetections(flattenedDetections, filters);
   }, [flattenedDetections, filters]);
 
-  const stats = useMemo(() => {
-    return getComplianceStats(filteredDetections);
-  }, [filteredDetections]);
-
   const resetFilters = () => setFilters(INITIAL_FILTERS);
 
   return (
-    <div className="flex flex-col px-6 py-8 gap-6 max-w-full">
+    <div className="flex flex-col w-full px-4 sm:px-6 py-6 gap-6 min-w-0">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -88,7 +134,13 @@ export default function LogsPage() {
           </div>
           <div className="flex flex-col">
             <p className="text-sm text-slate-500 font-medium tracking-tight">
-              Total: <span className="text-slate-900 font-bold">{filteredDetections.length}</span> workers detected.
+              {t("total")}:{" "}
+              <span className="text-slate-900 font-bold">
+                {backendStats
+                  ? backendStats.totalDetections
+                  : filteredDetections.length}
+              </span>{" "}
+              {t("workers_detected")}.
             </p>
           </div>
         </div>
@@ -103,21 +155,10 @@ export default function LogsPage() {
               setShowFilters(newState);
               if (!newState) resetFilters();
             }}
-            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showFilters ? 'bg-white text-slate-900 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
+            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showFilters ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-400 hover:text-slate-600"}`}
           >
             <Filter className="w-3.5 h-3.5" />
-            Filters
-          </Button>
-
-          {/* Summary Toggle */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowSummary(!showSummary)}
-            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showSummary ? 'bg-white text-slate-900 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
-          >
-            <FileText className="w-3.5 h-3.5" />
-            Summary
+            {t("filters")}
           </Button>
 
           {/* Stats Toggle */}
@@ -125,10 +166,21 @@ export default function LogsPage() {
             variant="ghost"
             size="sm"
             onClick={() => setShowStats(!showStats)}
-            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showStats ? 'bg-white text-slate-900 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
+            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showStats ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-400 hover:text-slate-600"}`}
           >
             <ChartPie className="w-3.5 h-3.5" />
-            Stats
+            {t("stats")}
+          </Button>
+
+          {/* Summary Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowSummary(!showSummary)}
+            className={`h-8 gap-2 font-bold px-4 rounded-xl transition-all ${showSummary ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-400 hover:text-slate-600"}`}
+          >
+            <FileText className="w-3.5 h-3.5" />
+            {t("summary")}
           </Button>
         </div>
       </div>
@@ -142,14 +194,16 @@ export default function LogsPage() {
               {/* Search */}
               <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
-                  Search by Name
+                  {t("search_by_name")}
                 </label>
                 <div className="relative">
                   <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <Input
-                    placeholder="Type name..."
+                    placeholder={t("type_name")}
                     value={filters.search}
-                    onChange={(e) => setFilters(f => ({ ...f, search: e.target.value }))}
+                    onChange={(e) =>
+                      setFilters((f) => ({ ...f, search: e.target.value }))
+                    }
                     className="pl-9 h-9 bg-white border-slate-200 text-sm focus-visible:ring-slate-100"
                   />
                 </div>
@@ -158,12 +212,14 @@ export default function LogsPage() {
               {/* Start Date */}
               <div className="flex flex-col gap-1.5 min-w-[150px]">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
-                  Start Date
+                  {t("start_date")}
                 </label>
                 <Input
                   type="date"
                   value={filters.startDate}
-                  onChange={(e) => setFilters(f => ({ ...f, startDate: e.target.value }))}
+                  onChange={(e) =>
+                    setFilters((f) => ({ ...f, startDate: e.target.value }))
+                  }
                   className="h-9 bg-white border-slate-200 text-xs focus-visible:ring-slate-100 cursor-pointer"
                 />
               </div>
@@ -171,12 +227,14 @@ export default function LogsPage() {
               {/* End Date */}
               <div className="flex flex-col gap-1.5 min-w-[150px]">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
-                  End Date
+                  {t("end_date")}
                 </label>
                 <Input
                   type="date"
                   value={filters.endDate}
-                  onChange={(e) => setFilters(f => ({ ...f, endDate: e.target.value }))}
+                  onChange={(e) =>
+                    setFilters((f) => ({ ...f, endDate: e.target.value }))
+                  }
                   className="h-9 bg-white border-slate-200 text-xs focus-visible:ring-slate-100 cursor-pointer"
                 />
               </div>
@@ -184,17 +242,19 @@ export default function LogsPage() {
               {/* Reset Button (Mobile/Desktop adaptive) */}
               <div className="flex flex-col gap-1.5 min-w-[100px]">
                 <label className="text-[10px] font-bold text-transparent select-none uppercase tracking-wider px-1">
-                  Reset
+                  {t("reset")}
                 </label>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={resetFilters}
-                  disabled={JSON.stringify(filters) === JSON.stringify(INITIAL_FILTERS)}
+                  disabled={
+                    JSON.stringify(filters) === JSON.stringify(INITIAL_FILTERS)
+                  }
                   className="h-9 text-slate-500 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 gap-2 font-semibold px-4 rounded-lg transition-all border-slate-200 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-500"
                 >
                   <Eraser className="w-4 h-4" />
-                  Reset
+                  {t("reset")}
                 </Button>
               </div>
             </div>
@@ -202,16 +262,20 @@ export default function LogsPage() {
         </div>
       )}
 
-      {/* Summary Section */}
-      {showSummary && (
-        <OperationalSummary stats={stats} filters={filters} />
+      {/* Stats Section */}
+      {showStats && backendStats && (
+        <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+          <ComplianceChart stats={backendStats} isLoading={isStatsLoading} />
+        </div>
       )}
 
-      {/* Stats Section */}
-      {showStats && (
-        <div className="animate-in fade-in slide-in-from-top-4 duration-500">
-          <ComplianceChart stats={stats} isLoading={isHistoryLoading} />
-        </div>
+      {/* Summary Section */}
+      {showSummary && backendStats && (
+        <OperationalSummary
+          stats={backendStats}
+          filters={filters}
+          manualSummary={backendSummary}
+        />
       )}
 
       {/* Table Section */}

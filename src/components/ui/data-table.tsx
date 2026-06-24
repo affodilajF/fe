@@ -18,6 +18,7 @@ import {
     DialogContent,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { t } from "@/lib/translations";
 
 interface LogsDataTableProps {
     data: any[];
@@ -59,17 +60,17 @@ export function LogsDataTable({
                     <Table className="min-w-full">
                         <TableHeader className="bg-gray-100 border-b border-gray-300">
                             <TableRow className="hover:bg-gray-200 border-none">
-                                <TableHead className="w-12 text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">No</TableHead>
-                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Name</TableHead>
-                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Date</TableHead>
-                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">Time</TableHead>
-                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Apron</TableHead>
-                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Gloves</TableHead>
-                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Boots</TableHead>
-                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Mask</TableHead>
-                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Hairnet</TableHead>
-                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">Image</TableHead>
-                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">Created At</TableHead>
+                                <TableHead className="w-12 text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("no")}</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("name")}</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("date")}</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">{t("time")}</TableHead>
+                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("apron")}</TableHead>
+                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("gloves")}</TableHead>
+                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("boots")}</TableHead>
+                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("mask")}</TableHead>
+                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("hairnet")}</TableHead>
+                                <TableHead className="text-center text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12">{t("image")}</TableHead>
+                                <TableHead className="text-gray-800 font-bold text-[11px] uppercase tracking-widest px-4 h-12 whitespace-nowrap text-center">{t("created_at")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -133,7 +134,7 @@ export function LogsDataTable({
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={11} className="h-40 text-center text-slate-500 font-medium">
-                                        Tidak ada data deteksi yang tersedia.
+                                        {t("no_data_available")}
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -150,7 +151,7 @@ export function LogsDataTable({
                             {isLoading ? (
                                 <Skeleton className="h-4 w-24" />
                             ) : (
-                                `Halaman ${currentPage} / ${totalPages}`
+                                `${t("page")} ${currentPage} / ${totalPages}`
                             )}
                         </div>
                         <div className="flex items-center gap-2">
@@ -183,7 +184,7 @@ export function LogsDataTable({
                     className="w-screen h-screen p-0 overflow-hidden border-none bg-transparent flex items-center justify-center shadow-none [&>button]:hidden outline-none max-w-none"
                     onClick={() => setZoomImage(null)}
                 >
-                    <DialogTitle className="sr-only">Detailed Image View</DialogTitle>
+                    <DialogTitle className="sr-only">{t("detailed_image_view")}</DialogTitle>
                     {zoomImage && (
                         <img
                             src={zoomImage}

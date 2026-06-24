@@ -31,6 +31,7 @@ import {
 
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { t } from "@/lib/translations"
 
 export function NavUser({
   user,
@@ -95,7 +96,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <IconLogout />
-              Log out
+              {t("log_out")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

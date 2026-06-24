@@ -20,6 +20,7 @@ import { DetectionJob } from "@/app/dashboard/upload-detect/api";
 import { formatVideoDateTime, getVideoDate, getVideoTime } from "@/lib/date-utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { memo } from "react";
+import { t } from "@/lib/translations";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -63,33 +64,33 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
     {
         accessorKey: "name",
-        header: "name",
+        header: () => t("name"),
         cell: ({ row }) => {
             return <div className="font-semibold text-slate-800">{row.original.name}</div>;
         },
     },
     {
         accessorKey: "source_type",
-        header: "source",
+        header: () => t("source"),
         cell: ({ row }) => {
             const isImage = row.original.source_type?.toUpperCase() === "IMAGE";
             return (
                 <Badge variant="outline" className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${isImage ? 'bg-amber-50 text-amber-600 border-amber-200' : 'bg-blue-50 text-blue-600 border-blue-200'}`}>
-                    {row.original.source_type || "VIDEO"}
+                    {isImage ? t("image") : t("video")}
                 </Badge>
             );
         }
     },
     {
         accessorKey: "date",
-        header: "date",
+        header: () => t("date"),
         cell: ({ row }) => {
             return <div className="text-sm font-medium text-slate-600">{getVideoDate(row.original.data_datetime)}</div>;
         }
     },
     {
         accessorKey: "time",
-        header: "time",
+        header: () => t("time"),
         cell: ({ row }) => {
             const time = getVideoTime(row.original.data_datetime);
             const timeEnd = getVideoTime(row.original.data_datetime_end);
@@ -103,12 +104,12 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
     {
         accessorKey: "created_at",
-        header: () => <div className="text-center uppercase text-[10px] tracking-widest text-gray-800">Created At</div>,
+        header: () => <div className="text-center uppercase text-[10px] tracking-widest text-gray-800">{t("created_at")}</div>,
         cell: ({ row }) => <div className="text-[10px] font-medium text-slate-500 text-center">{row.original.created_at ? formatVideoDateTime(row.original.created_at) : "-"}</div>,
     },
     {
         id: "actions",
-        header: () => <div className="text-center uppercase text-[10px] tracking-widest text-gray-800">Actions</div>,
+        header: () => <div className="text-center uppercase text-[10px] tracking-widest text-gray-800">{t("actions")}</div>,
         cell: ({ row, table }) => {
             const onRowClick = (table.options.meta as any)?.onRowClick;
             return (
@@ -214,7 +215,7 @@ function HistoryDataTableComponent({
                                         colSpan={columns.length}
                                         className="h-32 text-center text-slate-500 border-none"
                                     >
-                                        Tidak ada data yang tersedia.
+                                        {t("no_data_available")}
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -228,7 +229,9 @@ function HistoryDataTableComponent({
                     {isLoading ? (
                         <Skeleton className="h-4 w-48" />
                     ) : (
-                        `Showing ${table.getRowModel().rows.length} data from ${totalData} data`
+                        t("showing_data")
+                            .replace("{count}", table.getRowModel().rows.length.toString())
+                            .replace("{total}", totalData.toString())
                     )}
                 </div>
                 <div className="flex items-center gap-4">
@@ -236,7 +239,7 @@ function HistoryDataTableComponent({
                         {isLoading ? (
                             <Skeleton className="h-4 w-24" />
                         ) : (
-                            `Halaman ${pageIndex + 1} / ${pageCount || 1}`
+                            `${t("page")} ${pageIndex + 1} / ${pageCount || 1}`
                         )}
                     </div>
                     <div className="flex items-center gap-2">

@@ -31,6 +31,7 @@ import {
 import { useEffect } from "react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { BASE_URL } from "@/lib/api-response";
+import { t } from "@/lib/translations";
 
 interface ModelStateProps {
   isLoading?: boolean;
@@ -202,11 +203,10 @@ export default function ModelState({
         </div>
 
         <h2 className="text-3xl font-bold text-slate-800 mb-3">
-          Ready to Start PPE Analysis?
+          {t("ready_to_start")}
         </h2>
         <p className="text-slate-500 mb-10 max-w-xl mx-auto leading-relaxed font-normal">
-          No AI model is running yet. <br />
-          Upload your image or video and let our system analyze it for you automatically.
+          {t("no_model_running_desc")}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto relative z-10">
@@ -218,7 +218,7 @@ export default function ModelState({
                 className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-200/50 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
               >
                 <Film className="w-4 h-4" />
-                Video Analysis
+                {t("video_analysis")}
               </Button>
             }
           />
@@ -230,7 +230,7 @@ export default function ModelState({
                 className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-amber-200/50 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
               >
                 <ImageIcon className="w-4 h-4" />
-                Image Analysis
+                {t("image_analysis")}
               </Button>
             }
           />
@@ -261,11 +261,10 @@ export default function ModelState({
 
   const handleCancelClick = () => {
     showConfirm({
-      title: "Konfirmasi Pembatalan",
-      message:
-        "Hasil deteksi tidak akan disimpan ke database jika Anda melanjutkan.",
-      confirmText: "Lanjutkan",
-      cancelText: "Batal",
+      title: t("confirm_cancel"),
+      message: t("confirm_cancel_desc"),
+      confirmText: t("continue"),
+      cancelText: t("cancel"),
       variant: "danger",
       onConfirm: () => {
         if (onCancel) onCancel(model.job_id);
@@ -281,9 +280,9 @@ export default function ModelState({
     }
 
     showConfirm({
-      title: "Berhasil!",
-      message: "Hasil deteksi berhasil disimpan ke database",
-      confirmText: "OK",
+      title: t("success"),
+      message: t("success_stored_desc"),
+      confirmText: t("ok"),
       hideCancel: true,
       variant: "warning",
       onConfirm: () => {
@@ -318,8 +317,8 @@ export default function ModelState({
           )}
           <span className="tracking-tight">
             {isRunning
-              ? "Detection process is running. Please wait..."
-              : "Detection process is completed!"}
+              ? t("process_running")
+              : t("process_completed")}
           </span>
         </motion.div>
       </AnimatePresence>
@@ -341,7 +340,7 @@ export default function ModelState({
                 )}
               </div>
               <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">
-                AI Detection Analysis
+                {t("ai_analysis")}
               </span>
             </div>
             <h3 className="font-bold text-slate-900 text-2xl md:text-3xl leading-tight">
@@ -361,7 +360,7 @@ export default function ModelState({
                 <Check className={`w-5 h-5 ${theme.badgeIcon}`} />
               )}
               <span className="tracking-wider uppercase font-bold">
-                {isRunning ? `Processing` : "Finished"}
+                {isRunning ? t("processing") : t("finished")}
               </span>
             </div>
           </div>
@@ -372,12 +371,12 @@ export default function ModelState({
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                 <Layers className="w-3 h-3" />
-                Frame Processing
+                {t("frame_processing")}
               </span>
               <span className="text-sm font-bold text-slate-700">
                 {displayedCurrentFrames.toLocaleString()}{" "}
                 <span className="text-slate-400 font-medium">
-                  / {displayedTotalFrames.toLocaleString()} frames
+                  / {displayedTotalFrames.toLocaleString()} {t("frames")}
                 </span>
               </span>
             </div>
@@ -407,7 +406,7 @@ export default function ModelState({
             <div className="flex items-center gap-2 text-slate-400">
               <Activity className="w-4.5 h-4.5" />
               <span className="text-[9px] font-semibold uppercase tracking-wider">
-                Job ID
+                {t("job_id")}
               </span>
             </div>
             <span className="font-mono text-slate-500 text-xs font-bold break-words">
@@ -420,7 +419,7 @@ export default function ModelState({
             <div className="flex items-center gap-2 text-slate-400">
               <Calendar className="w-4.5 h-4.5" />
               <span className="text-[11px] font-semibold uppercase tracking-wider">
-                Date
+                {t("date")}
               </span>
             </div>
             <span className="font-bold text-slate-800 text-xl">
@@ -433,7 +432,7 @@ export default function ModelState({
             <div className="flex items-center gap-2 text-slate-400">
               <Clock className="w-4.5 h-4.5" />
               <span className="text-[11px] font-semibold uppercase tracking-wider">
-                Time
+                {t("time")}
               </span>
             </div>
             <span className="font-bold text-slate-800 text-lg">
@@ -450,7 +449,7 @@ export default function ModelState({
             <div className="flex items-center gap-2 text-slate-400">
               <Activity className="w-4.5 h-4.5" />
               <span className="text-[9px] font-semibold uppercase tracking-wider">
-                Created at
+                {t("created_at")}
               </span>
             </div>
             <span className="font-mono text-slate-500 text-xs font-bold break-words">
@@ -466,7 +465,7 @@ export default function ModelState({
               variant="outline"
               className="flex items-center gap-2 hover:bg-slate-100 text-slate-600 transition rounded-lg border-slate-200"
             >
-              <span className="text-sm font-semibold">Delete Result</span>
+              <span className="text-sm font-semibold">{t("delete_result")}</span>
             </Button>
 
             <Button
@@ -475,7 +474,7 @@ export default function ModelState({
               disabled={isStoring}
               className="border-amber-1000 bg-amber-500 hover:bg-amber-600 border-amber-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
             >
-              {isStoring ? "Storing..." : "Store Result"}
+              {isStoring ? t("storing") : t("store_result")}
             </Button>
             <Button
               variant="secondary"
@@ -483,7 +482,7 @@ export default function ModelState({
               className="border-indigo-1000 bg-indigo-500 hover:bg-indigo-600 border-indigo-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
             >
               <Eye className="w-4 h-4" />
-              <span className="text-sm font-semibold">See Result</span>
+              <span className="text-sm font-semibold">{t("see_result")}</span>
             </Button>
           </div>
         )}

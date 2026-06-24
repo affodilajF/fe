@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/card";
 
 import { login } from "./api";
+import { t } from "@/lib/translations";
 
 export default function LoginPage() {
 
@@ -89,12 +90,12 @@ export default function LoginPage() {
 
         <Card className="border-border/40 bg-background/60 backdrop-blur-xl shadow-2xl">
           <CardHeader>
-            <CardTitle className="text-xl">Login</CardTitle>
+            <CardTitle className="text-xl">{t("login")}</CardTitle>
           </CardHeader>
           <CardContent>
             {registered && (
               <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-sm rounded-lg text-center font-medium">
-                Registrasi berhasil! Silakan masuk ke akun Anda.
+                {t("register_success")}
               </div>
             )}
             {errorMsg && (
@@ -105,7 +106,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -122,7 +123,7 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t("password")}</Label>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -154,7 +155,7 @@ export default function LoginPage() {
                   <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                 ) : (
                   <>
-                    Masuk
+                    {t("login")}
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
@@ -163,9 +164,9 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 border-t border-border/10 mt-2 pt-6">
             <div className="text-sm text-center text-muted-foreground">
-              Don't have an account?{" "}
+              {t("no_account")}{" "}
               <Link href="/signup" className="font-semibold text-primary hover:underline underline-offset-4">
-                Sign Up now
+                {t("sign_up_now")}
               </Link>
             </div>
           </CardFooter>

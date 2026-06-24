@@ -5,6 +5,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { AlertTriangle, Info, Loader2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ComplianceStats } from "../filter_logic";
+import { t } from "@/lib/translations";
 
 interface ViolationDonutProps {
     stats: ComplianceStats;
@@ -12,7 +13,7 @@ interface ViolationDonutProps {
 }
 
 export function ViolationDonut({ stats, isLoading }: ViolationDonutProps) {
-    const donutLabels = Object.keys(stats.ppeFailCounts);
+    const donutLabels = Object.keys(stats.ppeFailCounts).map(key => t(key.toLowerCase() as any));
     const donutSeries = Object.values(stats.ppeFailCounts);
 
     const donutOptions: any = {
@@ -28,7 +29,7 @@ export function ViolationDonut({ stats, isLoading }: ViolationDonutProps) {
                         show: true,
                         total: {
                             show: true,
-                            label: 'Fails',
+                            label: t("fails"),
                             color: '#64748b',
                             fontSize: '12px',
                             formatter: () => donutSeries.reduce((a: number, b: number) => a + b, 0)
@@ -45,14 +46,14 @@ export function ViolationDonut({ stats, isLoading }: ViolationDonutProps) {
         <div className="bg-slate-50/40 border border-slate-100 p-6 rounded-3xl">
             <div className="flex items-center gap-2 mb-6">
                 <AlertTriangle className="w-4 h-4 text-rose-500" />
-                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">Top Violation Factors</h4>
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">{t("top_violation_factors")}</h4>
                 <TooltipProvider delayDuration={150}>
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Info className="w-3 h-3 text-slate-300 cursor-help" />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-[220px] p-3 text-xs bg-slate-800 text-white border-none">
-                            <p className="opacity-80">Breakdown of specific PPE items that failed most frequently.</p>
+                            <p className="opacity-80">{t("top_violation_factors_desc")}</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -63,7 +64,7 @@ export function ViolationDonut({ stats, isLoading }: ViolationDonutProps) {
                         <div className="absolute inset-0 z-10 bg-white/50 backdrop-blur-[1px] flex items-center justify-center rounded-2xl">
                             <div className="flex flex-col items-center gap-2">
                                 <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Updating Chart...</span>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t("updating_chart")}</span>
                             </div>
                         </div>
                     )}
@@ -74,9 +75,9 @@ export function ViolationDonut({ stats, isLoading }: ViolationDonutProps) {
                     {isLoading ? (
                         <div className="flex flex-col items-center gap-2">
                             <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Updating Chart...</span>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t("updating_chart")}</span>
                         </div>
-                    ) : "No non-compliant cases detected."}
+                    ) : t("no_violations_detected")}
                 </div>
             )}
         </div>

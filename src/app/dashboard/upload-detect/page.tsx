@@ -17,6 +17,7 @@ import {
 } from "./api";
 import { ComplianceDetailDialog } from "@/components/compliance-detail-dialog";
 import { getVideoDate, getVideoTime } from "@/lib/date-utils";
+import { t } from "@/lib/translations";
 
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 
@@ -205,7 +206,7 @@ export default function StreamingPage() {
               <History className="w-5 h-5" />
             </div>
             <h2 className="text-xl font-bold text-slate-800 tracking-tight">
-              Detection Results
+              {t("detection_results")}
             </h2>
           </div>
           <HistoryDataTable
