@@ -260,7 +260,7 @@ export const translations = {
     type_name: "Ketik nama...",
     start_date: "Tanggal Mulai",
     end_date: "Tanggal Selesai",
-    summary_analysis: "Analisis Ringkasan",
+    summary_analysis: "Ringkasan",
     no_summary_provided: "Ringkasan tidak tersedia",
     compliance_over_time: "Kepatuhan dari Waktu ke Waktu",
     compliance_by_hour: "Kepatuhan per Jam",

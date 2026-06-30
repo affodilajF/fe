@@ -182,7 +182,7 @@ export default function AddDataDialogVideo({
               htmlFor="nama"
               className="text-slate-700 font-semibold text-sm transition-colors"
             >
-              {t("title")}
+              {t("name")}
             </Label>
             <Input
               type="text"

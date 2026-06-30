@@ -401,20 +401,7 @@ export default function ModelState({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {/* Job ID - Paling depan */}
-          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-[1.5rem] border border-slate-200 flex flex-col gap-1 transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 hover:-translate-y-1">
-            <div className="flex items-center gap-2 text-slate-400">
-              <Activity className="w-4.5 h-4.5" />
-              <span className="text-[9px] font-semibold uppercase tracking-wider">
-                {t("job_id")}
-              </span>
-            </div>
-            <span className="font-mono text-slate-500 text-xs font-bold break-words">
-              #{model.job_id}
-            </span>
-          </div>
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {/* Tanggal */}
           <div className="bg-white/60 backdrop-blur-sm p-6 rounded-[1.5rem] border border-slate-200 flex flex-col gap-3 transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 hover:-translate-y-1">
             <div className="flex items-center gap-2 text-slate-400">
