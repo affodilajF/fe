@@ -3,6 +3,7 @@
 import {
   IconDotsVertical,
   IconLogout,
+  IconUser,
 } from "@tabler/icons-react"
 
 import {
@@ -66,7 +67,9 @@ export function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg bg-slate-100 text-slate-500">
+                  <IconUser className="size-4" />
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{userName || user.name}</span>

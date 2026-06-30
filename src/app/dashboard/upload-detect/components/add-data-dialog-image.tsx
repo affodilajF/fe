@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { uploadAndRunDetectionImages, getDetectionParameter } from "../api";
-import { Calendar, Clock, ImageIcon, X, ArrowDown } from "lucide-react";
+import { Calendar, Clock, ImageIcon, X } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -292,13 +292,6 @@ export default function AddDataDialogImage({
 
                     {/* ROI Overlay */}
                     <div className="absolute inset-0 pointer-events-none select-none">
-                      <div className="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center animate-pulse text-white/90 z-10 scale-[0.8]">
-                        <span className="text-[9px] font-bold tracking-widest uppercase mb-0.5 bg-black/50 px-2.5 py-1 rounded backdrop-blur-sm shadow-sm ring-1 ring-white/20">
-                          {t("entry_direction")}
-                        </span>
-                        <ArrowDown className="w-5 h-5 drop-shadow-md" />
-                      </div>
-
                       {lineTop !== undefined && lineBottom !== undefined && (
                         <div
                           className="absolute left-0 right-0 bg-red-500/20 transition-all duration-75 ease-linear flex items-center justify-center z-10"
