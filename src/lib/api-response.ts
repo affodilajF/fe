@@ -157,7 +157,7 @@ export async function safeFetch<T>(url: string, options: RequestInit): ApiRespon
     }
 
     return await handleResponse(res);
-  } catch (e) {
+  } catch {
     return {
       success: false,
       message: "There was a problem contacting the server. Retry later.",

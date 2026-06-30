@@ -144,6 +144,7 @@ export default function ModelState({
     return () => {
       ctrl.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runningModel?.job_id, runningModel?.job_status, setRunningModel]);
 
   // Skeleton UI

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { History } from "lucide-react";
 import ModelState from "./components/model-state";
 import { DetectionJob } from "./api";
-import { BASE_URL } from "@/lib/api-response";
 import { useGlobalErrorStore } from "@/lib/error-store";
 import { HistoryDataTable } from "@/components/data-table-history";
 import {
@@ -12,14 +11,11 @@ import {
   getDetectionListData,
   storeDetectionResult,
   cancelDetectionResult,
-
   getListDetectionResultByJobId,
 } from "./api";
 import { ComplianceDetailDialog } from "@/components/compliance-detail-dialog";
 import { getVideoDate, getVideoTime } from "@/lib/date-utils";
 import { t } from "@/lib/translations";
-
-import { fetchEventSource } from "@microsoft/fetch-event-source";
 
 
 export interface JobDetectionResult {
@@ -115,10 +111,12 @@ export default function StreamingPage() {
 
   useEffect(() => {
     fetchDetectionListData(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
     fetchNotDecidedJobDetection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // SSE logic moved to ModelState component for better performance

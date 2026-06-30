@@ -4,8 +4,6 @@ import * as React from "react";
 import {
     IconChevronLeft,
     IconChevronRight,
-    IconCircleCheckFilled,
-    IconLoader,
     IconGripVertical,
 } from "@tabler/icons-react";
 import {

@@ -58,6 +58,7 @@ export default function AddDataDialogVideo({
       setThumbnail(null);
       fetchDetectionParameter();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const fetchDetectionParameter = async () => {

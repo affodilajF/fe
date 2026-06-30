@@ -57,6 +57,7 @@ export default function AddDataDialogImage({
       setImagePreviews([]);
       fetchDetectionParameter();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const fetchDetectionParameter = async () => {

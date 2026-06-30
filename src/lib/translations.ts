@@ -10,6 +10,7 @@ export const translations = {
     management: "Management",
     compliance_dashboard: "Compliance Dashboard",
     ai_detection_system: "AI Detection System",
+    ppe_monitor: "PPE Monitor",
 
     // Common Actions
     save: "Save",
@@ -42,6 +43,10 @@ export const translations = {
     dashboard: "Dashboard",
 
     // Auth
+    app_title: "PPE Compliance Monitoring Dashboard",
+    welcome_back: "Welcome back",
+    login_subtitle: "Sign in to continue to your dashboard.",
+    create_account_subtitle: "Create an account to get started.",
     login: "Login",
     log_out: "Log out",
     register_success: "Registration successful! Please sign in to your account.",
@@ -193,6 +198,7 @@ export const translations = {
     management: "Manajemen",
     compliance_dashboard: "Dasbor Kepatuhan",
     ai_detection_system: "Sistem Deteksi AI",
+    ppe_monitor: "Monitor APD",
 
     // Common Actions
     save: "Simpan",
@@ -225,6 +231,10 @@ export const translations = {
     dashboard: "Dasbor",
 
     // Auth
+    app_title: "Dashboard Monitoring Kepatuhan Alat Pelindung Diri (APD)",
+    welcome_back: "Selamat datang kembali",
+    login_subtitle: "Masuk untuk melanjutkan ke dasbor Anda.",
+    create_account_subtitle: "Buat akun untuk memulai.",
     login: "Masuk",
     log_out: "Keluar",
     register_success: "Registrasi berhasil! Silakan masuk ke akun Anda.",

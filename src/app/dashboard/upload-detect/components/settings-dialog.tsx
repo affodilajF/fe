@@ -52,6 +52,7 @@ export default function SettingsDialog() {
     if (open) {
       fetchDetectionParameter();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ export default function SettingsDialog() {
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (containerRef.current && lineBottom && lineTop) {
       const rect = containerRef.current.getBoundingClientRect();
-      let y = e.clientY - rect.top;
+      const y = e.clientY - rect.top;
       const percentage = (y / rect.height) * 100;
 
       // Tentukan garis mana yang lebih dekat dengan cursor
@@ -197,7 +198,7 @@ export default function SettingsDialog() {
                       type="button"
                       variant="secondary"
                       size="sm"
-                      className="text-xs h-7 px-2 text-xs bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 font-semibold flex items-center gap-1"
+                      className="text-xs h-7 px-2 bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 font-semibold flex items-center gap-1"
                     >
                       <Camera className="w-3 h-3" />
                       {t("browse")}

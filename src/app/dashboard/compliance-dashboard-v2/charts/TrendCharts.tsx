@@ -3,8 +3,7 @@
 import dynamic from 'next/dynamic';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { useState } from "react";
-import { TrendingUp, Info, Loader2 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TrendingUp, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ComplianceStats } from "../filter_logic";
 import { t } from "@/lib/translations";
@@ -88,7 +87,7 @@ export function TrendCharts({ stats, isLoading }: TrendChartsProps) {
         },
         tooltip: {
             ...commonTrendOptions.tooltip,
-            custom: function ({ seriesIndex, dataPointIndex, w }: any) {
+            custom: function ({ dataPointIndex }: any) {
                 const data = stats.dailyTrend[dataPointIndex];
                 if (!data) return '';
                 const metricVal = dataPointIndex < trendSeries[0].data.length ? trendSeries[0].data[dataPointIndex] : 0;
@@ -139,7 +138,7 @@ export function TrendCharts({ stats, isLoading }: TrendChartsProps) {
         },
         tooltip: {
             ...commonTrendOptions.tooltip,
-            custom: function ({ seriesIndex, dataPointIndex, w }: any) {
+            custom: function ({ dataPointIndex }: any) {
                 const data = stats.hourlyTrend[dataPointIndex];
                 if (!data) return '';
                 const metricVal = dataPointIndex < hourlyTrendSeries[0].data.length ? hourlyTrendSeries[0].data[dataPointIndex] : 0;

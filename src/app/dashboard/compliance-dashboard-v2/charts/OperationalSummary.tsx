@@ -1,8 +1,6 @@
 "use client";
 
 import { FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { ComplianceStats, PPEFilters } from "../filter_logic";
 import { t } from "@/lib/translations";
 

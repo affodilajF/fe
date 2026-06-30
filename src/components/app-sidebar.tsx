@@ -56,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <Link href="/dashboard/upload-detect">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
-                  PPE Monitor
+                  {t("ppe_monitor")}
                 </span>
               </Link>
             </SidebarMenuButton>

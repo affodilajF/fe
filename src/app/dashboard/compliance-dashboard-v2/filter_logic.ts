@@ -1,5 +1,3 @@
-import { DetectionResultItem } from "./api";
-
 export interface PPEFilters {
   search: string;
   startDate: string; // YYYY-MM-DD

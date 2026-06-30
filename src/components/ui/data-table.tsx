@@ -47,7 +47,6 @@ export function LogsDataTable({
     isLoading,
     currentPage,
     totalPages,
-    totalDetections,
     onPageChange,
     pageSize
 }: LogsDataTableProps) {

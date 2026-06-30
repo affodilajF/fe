@@ -9,11 +9,10 @@ import {
 import {
   ClipboardList,
   Filter,
-  X,
   Search,
   Eraser,
   FileText,
-  Loader2,
+  ChartPie,
 } from "lucide-react";
 import { toast } from "sonner";
 import { LogsDataTable } from "@/components/ui/data-table";
@@ -24,16 +23,8 @@ import {
   ComplianceStats,
 } from "./filter_logic";
 import { t } from "@/lib/translations";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChartPie } from "lucide-react";
 import { ComplianceChart } from "./charts";
 import { OperationalSummary } from "./charts/OperationalSummary";
 
@@ -102,6 +93,7 @@ export default function LogsPage() {
 
   useEffect(() => {
     fetchStatsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const flattenedDetections = useMemo(() => {
