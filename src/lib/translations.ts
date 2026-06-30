@@ -49,7 +49,8 @@ export const translations = {
     create_account_subtitle: "Create an account to get started.",
     login: "Login",
     log_out: "Log out",
-    register_success: "Registration successful! Please sign in to your account.",
+    register_success:
+      "Registration successful! Please sign in to your account.",
     email: "Email",
     password: "Password",
     no_account: "Don't have an account?",
