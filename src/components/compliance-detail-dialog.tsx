@@ -18,7 +18,7 @@ import {
 import {
     DetectionResults
 } from "../app/dashboard/upload-detect/api";
-import { Check, X, Shield, User, HardHat, Footprints, Hash, Clock } from "lucide-react";
+import { Check, X, Shield, User, HardHat, Footprints, Clock } from "lucide-react";
 import { Button } from "./ui/button";
 import { formatVideoDateTime, getVideoTime } from "@/lib/date-utils";
 import { t } from "@/lib/translations";
@@ -80,9 +80,6 @@ export function ComplianceDetailDialog({ items, metadata, open, onOpenChange }: 
                                         }
                                     </span>
                                     <span className="text-slate-500">{formatVideoDateTime(metadata.created_at)}</span>
-                                </div>
-                                <div className="text-[10px] text-slate-400 font-medium flex items-center gap-1">
-                                    <Hash className="w-3 h-3" /> {metadata.job_id}
                                 </div>
                             </div>
 
