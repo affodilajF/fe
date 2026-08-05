@@ -60,13 +60,17 @@ export function ComplianceChart({ stats, isLoading }: ComplianceChartProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6 pt-6 px-4 sm:px-6">
+          {/* Summary charts : card berapa succes berapa fail */}
           <SummaryCards stats={stats} isLoading={isLoading} />
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            {/* Pelanggaran donat */}
             <ViolationDonut stats={stats} isLoading={isLoading} />
+             {/* Tabel audit */}
             <AuditTable stats={stats} isLoading={isLoading} />
           </div>
 
+          {/* Performance bar */}
           <PerformanceBar stats={stats} isLoading={isLoading} />
         </CardContent>
       </Card>

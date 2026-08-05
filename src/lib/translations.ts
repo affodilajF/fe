@@ -300,7 +300,7 @@ export const translations = {
     compliant_workers_desc:
       "Jumlah orang yang mengenakan peralatan keselamatan LENGKAP.",
     non_compliant_workers_desc:
-      "Jumlah orang yang kehilangan setidaknya satu komponen APD.",
+      "Jumlah orang yang setidaknya tidak memakai satu komponen APD.",
     compliance_rate_desc:
       "Persentase pekerja yang patuh dibandingkan dengan total pekerja.",
     adherence_percentage: "Persentase kepatuhan",

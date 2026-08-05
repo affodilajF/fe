@@ -88,14 +88,17 @@ export default function LogsPage() {
   };
 
   useEffect(() => {
+    {/* Filter di FE */}
     fetchDetectionListData();
   }, []);
 
   useEffect(() => {
+    {/* Filter di backend */}
     fetchStatsData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
+  {/* Filter rekap data di FE haha */}
   const flattenedDetections = useMemo(() => {
     if (!detectionJobs || !Array.isArray(detectionJobs)) return [];
 
@@ -261,7 +264,7 @@ export default function LogsPage() {
         </div>
       )}
 
-      {/* Summary Section */}
+      {/* Summary Section : Ringkasan*/}
       {showSummary && backendStats && (
         <OperationalSummary
           stats={backendStats}
